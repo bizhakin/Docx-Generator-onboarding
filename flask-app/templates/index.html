@@ -314,7 +314,7 @@
       }
 
       try {
-        const res = await fetch(`/api/contract-fields/${contractId}`);
+        const res = await fetch(`/fields/${contractId}`);
         if (!res.ok) throw new Error('Failed to load');
         const data = await res.json();
 

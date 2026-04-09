@@ -58,7 +58,7 @@ def index():
     return render_template("index.html", contracts=contracts)
 
 
-@app.route("/api/contract-fields/<contract_id>")
+@app.route("/fields/<contract_id>")
 def get_contract_fields(contract_id):
     contracts = load_contracts()
     contract = next((c for c in contracts if c["id"] == contract_id), None)
