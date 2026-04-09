@@ -1,0 +1,61 @@
+{
+  "contracts": [
+    {
+      "id": "service_agreement",
+      "name": "Service Agreement",
+      "template": "service_agreement.docx",
+      "fields": [
+        { "id": "CLIENT_NAME", "label": "Client Name", "type": "text", "placeholder": "Acme Corp" },
+        { "id": "CLIENT_ADDRESS", "label": "Client Address", "type": "text", "placeholder": "123 Main St, City, State 12345" },
+        { "id": "SERVICE_DESCRIPTION", "label": "Service Description", "type": "textarea", "placeholder": "Describe the services to be provided..." },
+        { "id": "START_DATE", "label": "Start Date", "type": "date", "placeholder": "" },
+        { "id": "END_DATE", "label": "End Date", "type": "date", "placeholder": "" },
+        { "id": "PAYMENT_AMOUNT", "label": "Payment Amount ($)", "type": "text", "placeholder": "5,000.00" },
+        { "id": "PAYMENT_TERMS", "label": "Payment Terms", "type": "text", "placeholder": "Net 30" },
+        { "id": "PROVIDER_NAME", "label": "Service Provider Name", "type": "text", "placeholder": "Your Company LLC" }
+      ]
+    },
+    {
+      "id": "nda",
+      "name": "Non-Disclosure Agreement (NDA)",
+      "template": "nda.docx",
+      "fields": [
+        { "id": "DISCLOSING_PARTY", "label": "Disclosing Party", "type": "text", "placeholder": "Your Company LLC" },
+        { "id": "RECEIVING_PARTY", "label": "Receiving Party", "type": "text", "placeholder": "Partner Corp" },
+        { "id": "PURPOSE", "label": "Purpose of Disclosure", "type": "textarea", "placeholder": "Describe the purpose of sharing confidential information..." },
+        { "id": "CONFIDENTIALITY_PERIOD", "label": "Confidentiality Period (years)", "type": "text", "placeholder": "2" },
+        { "id": "GOVERNING_LAW", "label": "Governing Law (State/Country)", "type": "text", "placeholder": "California, USA" }
+      ]
+    },
+    {
+      "id": "employment_offer",
+      "name": "Employment Offer Letter",
+      "template": "employment_offer.docx",
+      "fields": [
+        { "id": "CANDIDATE_NAME", "label": "Candidate Full Name", "type": "text", "placeholder": "Jane Smith" },
+        { "id": "POSITION_TITLE", "label": "Position Title", "type": "text", "placeholder": "Software Engineer" },
+        { "id": "DEPARTMENT", "label": "Department", "type": "text", "placeholder": "Engineering" },
+        { "id": "START_DATE", "label": "Start Date", "type": "date", "placeholder": "" },
+        { "id": "SALARY", "label": "Annual Salary ($)", "type": "text", "placeholder": "85,000" },
+        { "id": "MANAGER_NAME", "label": "Hiring Manager Name", "type": "text", "placeholder": "John Doe" },
+        { "id": "COMPANY_NAME", "label": "Company Name", "type": "text", "placeholder": "Acme Corp" },
+        { "id": "OFFER_EXPIRY", "label": "Offer Expiry Date", "type": "date", "placeholder": "" }
+      ]
+    },
+    {
+      "id": "freelance_contract",
+      "name": "Freelance Contract",
+      "template": "freelance_contract.docx",
+      "fields": [
+        { "id": "CLIENT_NAME", "label": "Client Name", "type": "text", "placeholder": "Acme Corp" },
+        { "id": "FREELANCER_NAME", "label": "Freelancer Name", "type": "text", "placeholder": "Jane Smith" },
+        { "id": "PROJECT_NAME", "label": "Project Name", "type": "text", "placeholder": "Website Redesign" },
+        { "id": "PROJECT_SCOPE", "label": "Project Scope", "type": "textarea", "placeholder": "Describe the deliverables and scope of work..." },
+        { "id": "HOURLY_RATE", "label": "Hourly Rate ($)", "type": "text", "placeholder": "150" },
+        { "id": "ESTIMATED_HOURS", "label": "Estimated Hours", "type": "text", "placeholder": "40" },
+        { "id": "DEADLINE", "label": "Project Deadline", "type": "date", "placeholder": "" },
+        { "id": "PAYMENT_SCHEDULE", "label": "Payment Schedule", "type": "text", "placeholder": "50% upfront, 50% on delivery" }
+      ]
+    }
+  ]
+}

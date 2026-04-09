@@ -3,6 +3,7 @@
 ## Overview
 
 pnpm workspace monorepo using TypeScript. Each package manages its own dependencies.
+Also contains a standalone Python Flask app for contract document generation.
 
 ## Stack
 
@@ -16,7 +17,30 @@ pnpm workspace monorepo using TypeScript. Each package manages its own dependenc
 - **API codegen**: Orval (from OpenAPI spec)
 - **Build**: esbuild (CJS bundle)
 
-## Key Commands
+## Flask Contract Generator App
+
+Located in `/flask-app/`. A standalone Python Flask web app.
+
+### Stack
+- **Language**: Python 3.11
+- **Framework**: Flask
+- **Document generation**: python-docx
+- **Templates**: `flask-app/contract_templates/` (.docx files)
+- **Config**: `flask-app/contracts.json` (defines contract types and fields)
+
+### Running
+- Workflow: `Start application` → `cd flask-app && python3 app.py`
+- Runs on port 5000
+
+### Adding new contract types
+1. Add a new entry to `flask-app/contracts.json` with `id`, `name`, `template` filename, and `fields` array
+2. Create a `.docx` template file in `flask-app/contract_templates/` using `{{PLACEHOLDER}}` syntax
+3. The `{{DATE}}` placeholder is always auto-filled with today's date
+
+### Template placeholders
+Use `{{FIELD_ID}}` in `.docx` templates. Example: `{{CLIENT_NAME}}`, `{{DATE}}`.
+
+## Key Commands (TypeScript monorepo)
 
 - `pnpm run typecheck` — full typecheck across all packages
 - `pnpm run build` — typecheck + build all packages
