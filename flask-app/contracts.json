@@ -1,6 +1,22 @@
 {
   "contracts": [
     {
+      "id": "custom_artist_package",
+      "name": "Custom Artist Package (Mxster Mxnds)",
+      "template": "custom_artist_package.docx",
+      "fields": [
+        { "id": "Full_Name", "label": "Client Full Name", "type": "text", "placeholder": "Jane Smith" },
+        { "id": "Email", "label": "Client Email", "type": "text", "placeholder": "jane@email.com" },
+        { "id": "Artist_Name", "label": "Artist / Stage Name", "type": "text", "placeholder": "DJ Example" },
+        { "id": "Price", "label": "Total Investment ($)", "type": "text", "placeholder": "500.00" },
+        { "type": "deliverables" },
+        { "id": "Start_Date", "label": "Engagement Start Date", "type": "date", "placeholder": "" },
+        { "id": "End_Date", "label": "Engagement End Date", "type": "date", "placeholder": "" },
+        { "id": "Clients_Printed_Name", "label": "Client Printed Name (Signature)", "type": "text", "placeholder": "Jane Smith" },
+        { "id": "Clients_Artist_Name", "label": "Client Artist / Stage Name (Signature)", "type": "text", "placeholder": "DJ Example" }
+      ]
+    },
+    {
       "id": "service_agreement",
       "name": "Service Agreement",
       "template": "service_agreement.docx",

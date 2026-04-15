@@ -18,23 +18,9 @@
       color: #1a202c;
     }
 
-    header {
-      text-align: center;
-      margin-bottom: 40px;
-    }
-
-    header h1 {
-      font-size: 2.2rem;
-      font-weight: 700;
-      color: #1a202c;
-      letter-spacing: -0.5px;
-    }
-
-    header p {
-      margin-top: 8px;
-      color: #64748b;
-      font-size: 1.05rem;
-    }
+    header { text-align: center; margin-bottom: 40px; }
+    header h1 { font-size: 2.2rem; font-weight: 700; color: #1a202c; letter-spacing: -0.5px; }
+    header p { margin-top: 8px; color: #64748b; font-size: 1.05rem; }
 
     .card {
       background: #fff;
@@ -42,209 +28,120 @@
       box-shadow: 0 4px 24px rgba(0,0,0,0.08);
       padding: 36px 40px;
       width: 100%;
-      max-width: 680px;
+      max-width: 700px;
     }
 
     .section-label {
-      font-size: 0.75rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: #94a3b8;
-      margin-bottom: 8px;
+      font-size: 0.75rem; font-weight: 600; text-transform: uppercase;
+      letter-spacing: 0.08em; color: #94a3b8; margin-bottom: 8px;
     }
 
-    .select-wrapper {
-      position: relative;
-      margin-bottom: 32px;
-    }
-
+    .select-wrapper { position: relative; margin-bottom: 32px; }
     .select-wrapper::after {
-      content: '▾';
-      position: absolute;
-      right: 16px;
-      top: 50%;
-      transform: translateY(-50%);
-      pointer-events: none;
-      color: #64748b;
-      font-size: 1rem;
+      content: '▾'; position: absolute; right: 16px; top: 50%;
+      transform: translateY(-50%); pointer-events: none; color: #64748b;
     }
 
-    select {
-      width: 100%;
-      padding: 12px 40px 12px 14px;
-      border: 2px solid #e2e8f0;
-      border-radius: 10px;
-      font-size: 1rem;
-      color: #1a202c;
-      background: #f8fafc;
-      appearance: none;
-      cursor: pointer;
-      transition: border-color 0.2s;
-    }
-
-    select:focus {
-      outline: none;
-      border-color: #6366f1;
-      background: #fff;
-    }
-
-    .divider {
-      height: 1px;
-      background: #e2e8f0;
-      margin: 0 0 28px;
-    }
-
-    #fields-container {
-      display: none;
-    }
-
-    #fields-container.visible {
-      display: block;
-    }
-
-    .fields-title {
-      font-size: 1.05rem;
-      font-weight: 600;
-      color: #1a202c;
-      margin-bottom: 20px;
-    }
-
-    .field-group {
-      margin-bottom: 20px;
-    }
-
-    label {
-      display: block;
-      font-size: 0.875rem;
-      font-weight: 500;
-      color: #374151;
-      margin-bottom: 6px;
-    }
-
-    input[type="text"],
-    input[type="date"],
-    textarea {
-      width: 100%;
-      padding: 11px 14px;
-      border: 2px solid #e2e8f0;
-      border-radius: 9px;
-      font-size: 0.95rem;
-      color: #1a202c;
-      background: #f8fafc;
+    select, input[type="text"], input[type="date"], textarea {
+      width: 100%; padding: 11px 14px; border: 2px solid #e2e8f0;
+      border-radius: 9px; font-size: 0.95rem; color: #1a202c;
+      background: #f8fafc; font-family: inherit;
       transition: border-color 0.2s, background 0.2s;
-      font-family: inherit;
     }
+    select { padding: 12px 40px 12px 14px; appearance: none; cursor: pointer; }
+    select:focus, input[type="text"]:focus, input[type="date"]:focus, textarea:focus {
+      outline: none; border-color: #6366f1; background: #fff;
+    }
+    textarea { resize: vertical; min-height: 90px; }
 
-    input[type="text"]:focus,
-    input[type="date"]:focus,
-    textarea:focus {
-      outline: none;
-      border-color: #6366f1;
-      background: #fff;
-    }
+    .divider { height: 1px; background: #e2e8f0; margin: 0 0 28px; }
 
-    textarea {
-      resize: vertical;
-      min-height: 90px;
-    }
+    #fields-container { display: none; }
+    #fields-container.visible { display: block; }
 
     .auto-date-note {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      background: #f0fdf4;
-      border: 1.5px solid #bbf7d0;
-      border-radius: 9px;
-      padding: 10px 14px;
-      margin-bottom: 24px;
-      font-size: 0.875rem;
-      color: #166534;
+      display: flex; align-items: center; gap: 8px;
+      background: #f0fdf4; border: 1.5px solid #bbf7d0;
+      border-radius: 9px; padding: 10px 14px; margin-bottom: 24px;
+      font-size: 0.875rem; color: #166534;
     }
 
-    .auto-date-note .icon { font-size: 1rem; }
+    .fields-grid {
+      display: grid; gap: 0;
+    }
+    @media (min-width: 560px) {
+      .fields-grid { grid-template-columns: 1fr 1fr; gap: 0 20px; }
+      .field-group.full-width { grid-column: 1 / -1; }
+    }
+
+    .field-group { margin-bottom: 20px; }
+    label { display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 6px; }
+
+    /* Deliverables section */
+    .deliverables-section { grid-column: 1 / -1; margin-bottom: 24px; }
+
+    .deliverables-count-row {
+      display: flex; align-items: center; gap: 12px; margin-bottom: 20px;
+    }
+    .deliverables-count-row label { margin-bottom: 0; white-space: nowrap; font-weight: 600; }
+    .deliverables-count-row .count-select-wrap { position: relative; width: 100px; }
+    .deliverables-count-row .count-select-wrap::after {
+      content: '▾'; position: absolute; right: 10px; top: 50%;
+      transform: translateY(-50%); pointer-events: none; color: #64748b; font-size: 0.85rem;
+    }
+    .deliverables-count-row select {
+      width: 100px; padding: 9px 30px 9px 12px;
+    }
+
+    .deliverable-block {
+      border: 2px solid #e2e8f0; border-radius: 12px;
+      padding: 18px 18px 4px; margin-bottom: 14px;
+      background: #f8fafc; transition: opacity 0.2s;
+    }
+    .deliverable-block.hidden { display: none; }
+
+    .deliverable-block-title {
+      font-size: 0.8rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.07em; color: #6366f1; margin-bottom: 14px;
+    }
+
+    .deliverable-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 0 16px;
+    }
+    @media (max-width: 559px) { .deliverable-grid { grid-template-columns: 1fr; } }
 
     .btn-generate {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      width: 100%;
-      padding: 14px;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      width: 100%; padding: 14px;
       background: linear-gradient(135deg, #6366f1, #8b5cf6);
-      color: #fff;
-      font-size: 1rem;
-      font-weight: 600;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-      transition: opacity 0.2s, transform 0.1s;
-      margin-top: 4px;
+      color: #fff; font-size: 1rem; font-weight: 600;
+      border: none; border-radius: 10px; cursor: pointer;
+      transition: opacity 0.2s, transform 0.1s; margin-top: 4px;
     }
-
     .btn-generate:hover { opacity: 0.92; }
     .btn-generate:active { transform: scale(0.98); }
-
-    .btn-generate.loading {
-      opacity: 0.7;
-      pointer-events: none;
-    }
+    .btn-generate.loading { opacity: 0.7; pointer-events: none; }
 
     .spinner {
-      width: 18px;
-      height: 18px;
-      border: 2.5px solid rgba(255,255,255,0.4);
-      border-top-color: #fff;
-      border-radius: 50%;
-      animation: spin 0.7s linear infinite;
-      display: none;
+      width: 18px; height: 18px;
+      border: 2.5px solid rgba(255,255,255,0.4); border-top-color: #fff;
+      border-radius: 50%; animation: spin 0.7s linear infinite; display: none;
     }
-
     .btn-generate.loading .spinner { display: inline-block; }
     .btn-generate.loading .btn-label { display: none; }
-
     @keyframes spin { to { transform: rotate(360deg); } }
 
     .empty-state {
-      text-align: center;
-      padding: 40px 0 8px;
-      color: #94a3b8;
+      text-align: center; padding: 40px 0 8px; color: #94a3b8;
     }
-
-    .empty-state svg {
-      width: 52px;
-      height: 52px;
-      margin-bottom: 12px;
-      opacity: 0.4;
-    }
-
-    .empty-state p { font-size: 0.95rem; }
+    .empty-state svg { width: 52px; height: 52px; margin-bottom: 12px; opacity: 0.4; }
 
     .error-msg {
-      background: #fef2f2;
-      border: 1.5px solid #fecaca;
-      color: #b91c1c;
-      border-radius: 9px;
-      padding: 10px 14px;
-      font-size: 0.875rem;
-      margin-top: 12px;
-      display: none;
+      background: #fef2f2; border: 1.5px solid #fecaca; color: #b91c1c;
+      border-radius: 9px; padding: 10px 14px; font-size: 0.875rem;
+      margin-top: 12px; display: none;
     }
-
     .error-msg.visible { display: block; }
-
-    .fields-grid {
-      display: grid;
-      gap: 0;
-    }
-
-    @media (min-width: 560px) {
-      .fields-grid {
-        grid-template-columns: 1fr 1fr;
-        gap: 0 20px;
-      }
-      .field-group.full-width { grid-column: 1 / -1; }
-    }
   </style>
 </head>
 <body>
@@ -267,7 +164,7 @@
     <div id="empty-state" class="empty-state">
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-          d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+          d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
       </svg>
       <p>Select a contract type above to get started.</p>
     </div>
@@ -277,20 +174,19 @@
       <div class="section-label">Step 2 — Fill in the Details</div>
 
       <div class="auto-date-note">
-        <span class="icon">&#x2705;</span>
+        <span>&#x2705;</span>
         <span>The <strong>{{DATE}}</strong> field will be automatically filled with today's date.</span>
       </div>
 
       <form id="contract-form" method="POST" action="/generate">
         <input type="hidden" name="contract_id" id="contract_id_input" />
 
-        <div class="fields-grid" id="dynamic-fields">
-        </div>
+        <div class="fields-grid" id="dynamic-fields"></div>
 
         <div class="error-msg" id="error-msg">Please fill in all required fields.</div>
 
         <button type="button" class="btn-generate" onclick="submitForm()">
-          <span class="btn-label">&#x2B07;&#xFE0F; Generate & Download</span>
+          <span class="btn-label">&#x2B07; Generate &amp; Download</span>
           <div class="spinner"></div>
         </button>
       </form>
@@ -298,13 +194,54 @@
   </div>
 
   <script>
+    function buildDeliverableBlock(index) {
+      const block = document.createElement('div');
+      block.className = 'deliverable-block';
+      block.id = `deliverable-block-${index}`;
+      block.innerHTML = `
+        <div class="deliverable-block-title">Deliverable ${index}</div>
+        <div class="deliverable-grid">
+          ${buildDeliverableField(`Service${index}`, 'Service', 'e.g. Mixing')}
+          ${buildDeliverableField(`Quantity${index}`, 'Quantity', 'e.g. 2 songs')}
+          ${buildDeliverableField(`Turnaround${index}`, 'Turnaround', 'e.g. 5 business days')}
+          ${buildDeliverableField(`Revisions${index}`, 'Revisions', 'e.g. 3 rounds')}
+        </div>
+      `;
+      return block;
+    }
+
+    function buildDeliverableField(id, label, placeholder) {
+      return `
+        <div class="field-group">
+          <label for="${id}">${label}</label>
+          <input type="text" id="${id}" name="${id}" placeholder="${placeholder}" />
+        </div>
+      `;
+    }
+
+    function updateDeliverableBlocks(count) {
+      for (let i = 1; i <= 5; i++) {
+        const block = document.getElementById(`deliverable-block-${i}`);
+        if (!block) continue;
+        if (i <= count) {
+          block.classList.remove('hidden');
+          block.querySelectorAll('input').forEach(inp => inp.required = true);
+        } else {
+          block.classList.add('hidden');
+          block.querySelectorAll('input').forEach(inp => {
+            inp.required = false;
+            inp.value = '';
+          });
+        }
+      }
+    }
+
     async function loadFields(contractId) {
       const container = document.getElementById('fields-container');
       const emptyState = document.getElementById('empty-state');
       const dynFields = document.getElementById('dynamic-fields');
       const contractInput = document.getElementById('contract_id_input');
       const errorMsg = document.getElementById('error-msg');
-
       errorMsg.classList.remove('visible');
 
       if (!contractId) {
@@ -322,12 +259,40 @@
         dynFields.innerHTML = '';
 
         data.fields.forEach(field => {
+          if (field.type === 'deliverables') {
+            const section = document.createElement('div');
+            section.className = 'deliverables-section full-width';
+
+            // Count selector row
+            const countRow = document.createElement('div');
+            countRow.className = 'deliverables-count-row field-group full-width';
+            countRow.innerHTML = `
+              <label>Number of Deliverables:</label>
+              <div class="count-select-wrap">
+                <select id="deliverables_count" name="deliverables_count" onchange="updateDeliverableBlocks(parseInt(this.value))">
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5" selected>5</option>
+                </select>
+              </div>
+            `;
+            section.appendChild(countRow);
+
+            // Build 5 deliverable blocks
+            for (let i = 1; i <= 5; i++) {
+              section.appendChild(buildDeliverableBlock(i));
+            }
+
+            dynFields.appendChild(section);
+            return;
+          }
+
           const isTextarea = field.type === 'textarea';
           const isDate = field.type === 'date';
-          const isWide = isTextarea;
-
           const group = document.createElement('div');
-          group.className = 'field-group' + (isWide ? ' full-width' : '');
+          group.className = 'field-group' + (isTextarea ? ' full-width' : '');
 
           const label = document.createElement('label');
           label.setAttribute('for', field.id);
@@ -336,6 +301,7 @@
           let input;
           if (isTextarea) {
             input = document.createElement('textarea');
+            if (field.placeholder) input.placeholder = field.placeholder;
           } else {
             input = document.createElement('input');
             input.type = isDate ? 'date' : 'text';
@@ -345,9 +311,6 @@
           input.id = field.id;
           input.name = field.id;
           input.required = true;
-          if (!isDate && field.placeholder && isTextarea) {
-            input.placeholder = field.placeholder;
-          }
 
           group.appendChild(label);
           group.appendChild(input);
@@ -368,11 +331,10 @@
 
       const inputs = form.querySelectorAll('input[required], textarea[required]');
       let valid = true;
-      inputs.forEach(inp => {
-        if (!inp.value.trim()) valid = false;
-      });
+      inputs.forEach(inp => { if (!inp.value.trim()) valid = false; });
 
       if (!valid) {
+        errorMsg.textContent = 'Please fill in all required fields.';
         errorMsg.classList.add('visible');
         return;
       }
@@ -380,9 +342,7 @@
       errorMsg.classList.remove('visible');
       btn.classList.add('loading');
 
-      const formData = new FormData(form);
-
-      fetch('/generate', { method: 'POST', body: formData })
+      fetch('/generate', { method: 'POST', body: new FormData(form) })
         .then(res => {
           if (!res.ok) return res.text().then(t => { throw new Error(t); });
           return res.blob();
@@ -392,8 +352,7 @@
           const a = document.createElement('a');
           a.href = url;
           const contractId = document.getElementById('contract_id_input').value;
-          const today = new Date().toISOString().split('T')[0];
-          a.download = `${contractId}_${today}.docx`;
+          a.download = `${contractId}_${new Date().toISOString().split('T')[0]}.docx`;
           document.body.appendChild(a);
           a.click();
           a.remove();
@@ -403,9 +362,7 @@
           errorMsg.textContent = 'Generation failed: ' + err.message;
           errorMsg.classList.add('visible');
         })
-        .finally(() => {
-          btn.classList.remove('loading');
-        });
+        .finally(() => btn.classList.remove('loading'));
     }
   </script>
 </body>

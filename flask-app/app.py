@@ -1,11 +1,10 @@
 import os
 import io
+import re
 import json
 from datetime import date
 from flask import Flask, render_template, request, jsonify, send_file, abort
 from docx import Document
-from docx.shared import Pt, RGBColor
-from docx.enum.text import WD_ALIGN_PARAGRAPH
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 TEMPLATES_DIR = os.path.join(BASE_DIR, "contract_templates")
@@ -19,35 +18,56 @@ def load_contracts():
         return json.load(f)["contracts"]
 
 
+def replace_in_paragraph(paragraph, replacements):
+    for key, value in replacements.items():
+        placeholder = "{{" + key + "}}"
+        if placeholder not in paragraph.text:
+            continue
+        # Try replacing run by run first (preserves formatting)
+        for run in paragraph.runs:
+            if placeholder in run.text:
+                run.text = run.text.replace(placeholder, str(value))
+        # If placeholder spans multiple runs, collapse and replace
+        if placeholder in paragraph.text:
+            full_text = "".join(r.text for r in paragraph.runs)
+            if placeholder in full_text:
+                new_text = full_text.replace(placeholder, str(value))
+                for run in paragraph.runs:
+                    run.text = ""
+                if paragraph.runs:
+                    paragraph.runs[0].text = new_text
+
+
+def clear_remaining_placeholders(paragraph):
+    """Remove any {{PLACEHOLDER}} that wasn't filled."""
+    if "{{" not in paragraph.text:
+        return
+    for run in paragraph.runs:
+        run.text = re.sub(r"\{\{[^}]+\}\}", "", run.text)
+    if "{{" in paragraph.text:
+        full_text = "".join(r.text for r in paragraph.runs)
+        cleaned = re.sub(r"\{\{[^}]+\}\}", "", full_text)
+        for run in paragraph.runs:
+            run.text = ""
+        if paragraph.runs:
+            paragraph.runs[0].text = cleaned
+
+
 def fill_template(template_path, field_values):
     doc = Document(template_path)
     today = date.today().strftime("%B %d, %Y")
     field_values["DATE"] = today
+    field_values["Date"] = today
 
-    def replace_in_paragraph(paragraph):
-        for key, value in field_values.items():
-            placeholder = "{{" + key + "}}"
-            if placeholder in paragraph.text:
-                for run in paragraph.runs:
-                    if placeholder in run.text:
-                        run.text = run.text.replace(placeholder, str(value))
-                if placeholder in paragraph.text:
-                    full_text = "".join(r.text for r in paragraph.runs)
-                    if placeholder in full_text:
-                        new_text = full_text.replace(placeholder, str(value))
-                        for i, run in enumerate(paragraph.runs):
-                            run.text = ""
-                        if paragraph.runs:
-                            paragraph.runs[0].text = new_text
-
-    for para in doc.paragraphs:
-        replace_in_paragraph(para)
-
+    all_paragraphs = list(doc.paragraphs)
     for table in doc.tables:
         for row in table.rows:
             for cell in row.cells:
-                for para in cell.paragraphs:
-                    replace_in_paragraph(para)
+                all_paragraphs.extend(cell.paragraphs)
+
+    for para in all_paragraphs:
+        replace_in_paragraph(para, field_values)
+        clear_remaining_placeholders(para)
 
     return doc
 
@@ -82,6 +102,14 @@ def generate():
     template_path = os.path.join(TEMPLATES_DIR, contract["template"])
     if not os.path.exists(template_path):
         abort(500, description=f"Template file '{contract['template']}' not found.")
+
+    # Handle deliverables count — blank out unused slots
+    deliverables_count = int(data.pop("deliverables_count", 5))
+    for i in range(1, 6):
+        for field in ["Service", "Quantity", "Turnaround", "Revisions"]:
+            key = f"{field}{i}"
+            if i > deliverables_count:
+                data[key] = ""
 
     doc = fill_template(template_path, data)
 
