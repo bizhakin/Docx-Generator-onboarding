@@ -19,6 +19,33 @@
       ]
     },
     {
+      "id": "album_contract_1000",
+      "name": "Full Album Standard — 12 Songs ($1,000)",
+      "template": "album_contract_1000.docx",
+      "client_signature_fields": [
+        { "id": "Clients_Printed_Name", "label": "Your Full Printed Name" }
+      ],
+      "fields": [
+        { "id": "Full_Name", "label": "Client Full Name", "type": "text", "placeholder": "Jane Smith" },
+        { "id": "Email", "label": "Client Email", "type": "text", "placeholder": "jane@email.com" }
+      ]
+    },
+    {
+      "id": "vault_contract_1500",
+      "name": "The Vault — Unlimited Annual Lease Membership ($1,500)",
+      "template": "vault_contract_1500.docx",
+      "client_signature_fields": [
+        { "id": "Clients_Printed_Name", "label": "Your Full Printed Name" }
+      ],
+      "fields": [
+        { "id": "Full_Name", "label": "Client Full Name", "type": "text", "placeholder": "Jane Smith" },
+        { "id": "Email", "label": "Client Email", "type": "text", "placeholder": "jane@email.com" },
+        { "id": "STAGE_Name", "label": "Artist / Stage Name", "type": "text", "placeholder": "DJ Example" },
+        { "id": "START_Date", "label": "Membership Start Date", "type": "date", "placeholder": "" },
+        { "id": "END_Date", "label": "Membership End Date (12 months from start)", "type": "date", "placeholder": "" }
+      ]
+    },
+    {
       "id": "service_agreement",
       "name": "Service Agreement",
       "template": "service_agreement.docx",
