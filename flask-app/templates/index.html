@@ -108,15 +108,7 @@
     }
 
     /* ── Inputs ── */
-    .select-wrapper { position: relative; margin-bottom: 28px; }
-    .select-wrapper::after {
-      content: '▾';
-      position: absolute; right: 14px; top: 50%;
-      transform: translateY(-50%);
-      pointer-events: none; color: var(--lime); font-size: 0.9rem;
-    }
-
-    select, input[type="text"], input[type="date"], textarea {
+    input[type="text"], input[type="date"], textarea {
       width: 100%;
       background: var(--charcoal2);
       border: 1px solid var(--border);
@@ -130,15 +122,78 @@
       appearance: none;
     }
 
-    select { padding-right: 38px; cursor: pointer; }
-    select option { background: var(--charcoal); }
-    select optgroup { background: var(--black); color: var(--lime); font-size: 0.7rem; letter-spacing: 0.12em; }
-    select optgroup option { color: var(--white); font-size: 0.9rem; letter-spacing: normal; }
-
     input[type="text"]:focus,
     input[type="date"]:focus,
-    textarea:focus,
-    select:focus { border-color: var(--lime); }
+    textarea:focus { border-color: var(--lime); }
+
+    /* ── Custom Dropdown ── */
+    .cdd { position: relative; margin-bottom: 28px; user-select: none; }
+
+    .cdd-trigger {
+      display: flex; align-items: center; justify-content: space-between;
+      width: 100%;
+      background: var(--charcoal2);
+      border: 1px solid var(--border);
+      color: var(--white);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.9rem;
+      padding: 13px 14px;
+      cursor: pointer;
+      transition: border-color 0.15s;
+      min-height: 46px;
+    }
+    .cdd-trigger:hover, .cdd.open .cdd-trigger { border-color: var(--lime); }
+
+    .cdd-trigger-text { flex: 1; text-align: left; color: #888; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .cdd-trigger-text.selected { color: var(--white); }
+
+    .cdd-chevron {
+      flex-shrink: 0; margin-left: 10px;
+      width: 18px; height: 18px;
+      display: flex; align-items: center; justify-content: center;
+      transition: transform 0.2s;
+    }
+    .cdd-chevron svg { width: 14px; height: 14px; fill: var(--lime); }
+    .cdd.open .cdd-chevron { transform: rotate(180deg); }
+
+    .cdd-panel {
+      display: none;
+      position: absolute; top: calc(100% + 2px); left: 0; right: 0;
+      background: var(--charcoal);
+      border: 1px solid var(--lime);
+      z-index: 999;
+      max-height: min(420px, 60vh);
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    .cdd.open .cdd-panel { display: block; }
+
+    .cdd-group-header {
+      padding: 10px 14px 6px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.6rem; font-weight: 700;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--lime);
+      background: var(--black);
+      border-bottom: 1px solid var(--border);
+      position: sticky; top: 0;
+    }
+
+    .cdd-option {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 13px 16px 13px 20px;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.88rem;
+      color: var(--white);
+      cursor: pointer;
+      transition: background 0.1s;
+      border-bottom: 1px solid var(--border);
+      -webkit-tap-highlight-color: transparent;
+    }
+    .cdd-option:last-child { border-bottom: none; }
+    .cdd-option:hover, .cdd-option:active { background: var(--charcoal2); }
+    .cdd-option.selected { color: var(--lime); }
+    .cdd-option.selected::after { content: '✓'; font-size: 0.75rem; color: var(--lime); }
 
     input::placeholder, textarea::placeholder { color: #555; }
     input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(1) brightness(0.4); }
@@ -415,45 +470,45 @@
     <!-- FORM AREA -->
     <div id="form-area">
       <div class="step-label">Step 01 — Select Contract Type</div>
-      <div class="select-wrapper" style="margin-bottom:28px;">
-        <select id="contract-select" onchange="loadFields(this.value)">
-          <option value="">— Choose a contract —</option>
+      <div class="cdd" id="contract-cdd">
+        <div class="cdd-trigger" onclick="cddToggle()" id="cdd-trigger">
+          <span class="cdd-trigger-text" id="cdd-label">— Choose a contract —</span>
+          <span class="cdd-chevron">
+            <svg viewBox="0 0 14 14" xmlns="http://www.w3.org/2000/svg"><path d="M1 4l6 6 6-6" stroke="#E6FB04" stroke-width="2" fill="none" stroke-linecap="square"/></svg>
+          </span>
+        </div>
+        <div class="cdd-panel" id="cdd-panel">
 
-          <optgroup label="── MASTERING ─────────────────">
-            <option value="master_50">Pro Stereo Master ($50)</option>
-            <option value="ep_mastering_200">EP Mastering Bundle — 5 Songs ($200)</option>
-          </optgroup>
+          <div class="cdd-group-header">Mastering</div>
+          <div class="cdd-option" data-value="master_50" onclick="cddSelect(this)">Pro Stereo Master<span style="color:var(--lime);font-size:.8rem;margin-left:8px;">$50</span></div>
+          <div class="cdd-option" data-value="ep_mastering_200" onclick="cddSelect(this)">EP Mastering Bundle — 5 Songs<span style="color:var(--lime);font-size:.8rem;margin-left:8px;">$200</span></div>
 
-          <optgroup label="── MIXING ────────────────────">
-            <option value="stdmix_60">Standard Mix — Essential ($60)</option>
-            <option value="hifi_150">High-Fidelity Studio Mix ($150)</option>
-            <option value="promix_250">Pro Studio Mix + Vocal Tuning ($250)</option>
-          </optgroup>
+          <div class="cdd-group-header">Mixing</div>
+          <div class="cdd-option" data-value="stdmix_60" onclick="cddSelect(this)">Standard Mix — Essential<span style="color:var(--lime);font-size:.8rem;margin-left:8px;">$60</span></div>
+          <div class="cdd-option" data-value="hifi_150" onclick="cddSelect(this)">High-Fidelity Studio Mix<span style="color:var(--lime);font-size:.8rem;margin-left:8px;">$150</span></div>
+          <div class="cdd-option" data-value="promix_250" onclick="cddSelect(this)">Pro Studio Mix + Vocal Tuning<span style="color:var(--lime);font-size:.8rem;margin-left:8px;">$250</span></div>
 
-          <optgroup label="── MIXING &amp; MASTERING ──────">
-            <option value="probundle_300">Pro Single Bundle + Pitch Correction ($300)</option>
-            <option value="radio_600">Radio-Ready Single — Mix &amp; Master ($600)</option>
-            <option value="deluxe_800">Deluxe EP Bundle — 4–9 Songs ($800)</option>
-            <option value="album_contract_1000">Full Album Standard — 12 Songs ($1,000)</option>
-          </optgroup>
+          <div class="cdd-group-header">Mixing &amp; Mastering</div>
+          <div class="cdd-option" data-value="probundle_300" onclick="cddSelect(this)">Pro Single Bundle + Pitch Correction<span style="color:var(--lime);font-size:.8rem;margin-left:8px;">$300</span></div>
+          <div class="cdd-option" data-value="radio_600" onclick="cddSelect(this)">Radio-Ready Single — Mix &amp; Master<span style="color:var(--lime);font-size:.8rem;margin-left:8px;">$600</span></div>
+          <div class="cdd-option" data-value="deluxe_800" onclick="cddSelect(this)">Deluxe EP Bundle — 4–9 Songs<span style="color:var(--lime);font-size:.8rem;margin-left:8px;">$800</span></div>
+          <div class="cdd-option" data-value="album_contract_1000" onclick="cddSelect(this)">Full Album Standard — 12 Songs<span style="color:var(--lime);font-size:.8rem;margin-left:8px;">$1,000</span></div>
 
-          <optgroup label="── BEATS &amp; CATALOG ACCESS ──">
-            <option value="vault_contract_1500">The Vault — Unlimited Annual Lease ($1,500)</option>
-          </optgroup>
+          <div class="cdd-group-header">Beats &amp; Catalog Access</div>
+          <div class="cdd-option" data-value="vault_contract_1500" onclick="cddSelect(this)">The Vault — Unlimited Annual Lease<span style="color:var(--lime);font-size:.8rem;margin-left:8px;">$1,500</span></div>
 
-          <optgroup label="── HIGH TICKET PACKAGES ──────">
-            <option value="exec_2000">Executive Bundle ($2,000)</option>
-            <option value="elite_2500">Elite Album Experience ($2,500)</option>
-            <option value="launchpad_5000">The Artist Launchpad ($5,000)</option>
-            <option value="execpartner_7500">The Executive Partnership ($7,500)</option>
-            <option value="legacy_10000">The Legacy 360 — Career Partnership ($10,000)</option>
-          </optgroup>
+          <div class="cdd-group-header">High Ticket Packages</div>
+          <div class="cdd-option" data-value="exec_2000" onclick="cddSelect(this)">Executive Bundle<span style="color:var(--lime);font-size:.8rem;margin-left:8px;">$2,000</span></div>
+          <div class="cdd-option" data-value="elite_2500" onclick="cddSelect(this)">Elite Album Experience<span style="color:var(--lime);font-size:.8rem;margin-left:8px;">$2,500</span></div>
+          <div class="cdd-option" data-value="launchpad_5000" onclick="cddSelect(this)">The Artist Launchpad<span style="color:var(--lime);font-size:.8rem;margin-left:8px;">$5,000</span></div>
+          <div class="cdd-option" data-value="execpartner_7500" onclick="cddSelect(this)">The Executive Partnership<span style="color:var(--lime);font-size:.8rem;margin-left:8px;">$7,500</span></div>
+          <div class="cdd-option" data-value="legacy_10000" onclick="cddSelect(this)">The Legacy 360 — Career Partnership<span style="color:var(--lime);font-size:.8rem;margin-left:8px;">$10,000</span></div>
 
-          <optgroup label="── OTHER ─────────────────────">
-            <option value="deposit_50">Service Deposit Agreement ($50)</option>
-            <option value="custom_artist_package">Custom Artist Package</option>
-          </optgroup>
-        </select>
+          <div class="cdd-group-header">Other</div>
+          <div class="cdd-option" data-value="deposit_50" onclick="cddSelect(this)">Service Deposit Agreement<span style="color:var(--lime);font-size:.8rem;margin-left:8px;">$50</span></div>
+          <div class="cdd-option" data-value="custom_artist_package" onclick="cddSelect(this)">Custom Artist Package<span style="color:var(--lime);font-size:.8rem;margin-left:8px;">Custom</span></div>
+
+        </div>
       </div>
 
       <div id="empty-state" class="empty-state">
@@ -536,6 +591,39 @@
   <script>
     let currentToken = null;
     let currentDownloadUrl = null;
+
+    // ── Custom Dropdown ──────────────────────────────────────────
+    let cddValue = '';
+
+    function cddToggle() {
+      const cdd = document.getElementById('contract-cdd');
+      cdd.classList.toggle('open');
+    }
+
+    function cddClose() {
+      document.getElementById('contract-cdd').classList.remove('open');
+    }
+
+    function cddSelect(el) {
+      const value = el.dataset.value;
+      const label = el.childNodes[0].textContent.trim();
+      // Update trigger label
+      const lbl = document.getElementById('cdd-label');
+      lbl.textContent = label;
+      lbl.classList.add('selected');
+      // Clear previous selected state
+      document.querySelectorAll('.cdd-option').forEach(o => o.classList.remove('selected'));
+      el.classList.add('selected');
+      cddValue = value;
+      cddClose();
+      loadFields(value);
+    }
+
+    document.addEventListener('click', function(e) {
+      const cdd = document.getElementById('contract-cdd');
+      if (cdd && !cdd.contains(e.target)) cddClose();
+    });
+    // ─────────────────────────────────────────────────────────────
 
     function buildDeliverableBlock(index) {
       const block = document.createElement('div');
@@ -717,7 +805,13 @@
       currentDownloadUrl = null;
       document.getElementById('success-panel').classList.remove('visible');
       document.getElementById('form-area').classList.remove('hidden');
-      document.getElementById('contract-select').value = '';
+      // Reset custom dropdown
+      cddValue = '';
+      const lbl = document.getElementById('cdd-label');
+      lbl.textContent = '— Choose a contract —';
+      lbl.classList.remove('selected');
+      document.querySelectorAll('.cdd-option').forEach(o => o.classList.remove('selected'));
+      cddClose();
       document.getElementById('fields-container').classList.remove('visible');
       document.getElementById('empty-state').style.display = '';
     }
