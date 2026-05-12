@@ -1,199 +1,497 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Contract Generator</title>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Contract Generator — Mxster Mxnds</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+    :root {
+      --black: #000000;
+      --charcoal: #1A1A1A;
+      --charcoal2: #242424;
+      --border: #2E2E2E;
+      --lime: #E6FB04;
+      --white: #FFFFFF;
+      --muted: #888888;
+      --danger: #FF4444;
+    }
+
     body {
-      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-      background: #f0f4f8;
+      font-family: 'Inter', sans-serif;
+      background: var(--black);
+      color: var(--white);
       min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 40px 16px 80px;
-      color: #1a202c;
+      padding: 0 16px 80px;
     }
 
-    header { text-align: center; margin-bottom: 40px; }
-    header h1 { font-size: 2.2rem; font-weight: 700; color: #1a202c; letter-spacing: -0.5px; }
-    header p { margin-top: 8px; color: #64748b; font-size: 1.05rem; }
-
-    .card {
-      background: #fff;
-      border-radius: 16px;
-      box-shadow: 0 4px 24px rgba(0,0,0,0.08);
-      padding: 36px 40px;
+    /* ── Header ── */
+    header {
       width: 100%;
-      max-width: 700px;
+      max-width: 720px;
+      padding: 48px 0 36px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 40px;
     }
 
-    .section-label {
-      font-size: 0.75rem; font-weight: 600; text-transform: uppercase;
-      letter-spacing: 0.08em; color: #94a3b8; margin-bottom: 8px;
+    .logo-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 10px;
     }
 
-    .select-wrapper { position: relative; margin-bottom: 32px; }
+    .logo-mark {
+      width: 36px; height: 36px;
+      background: var(--lime);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 900;
+      font-size: 16px;
+      color: var(--black);
+      letter-spacing: -1px;
+      flex-shrink: 0;
+    }
+
+    .logo-text {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 900;
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    header h1 {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 900;
+      font-size: clamp(1.8rem, 5vw, 2.8rem);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--white);
+      line-height: 1.1;
+    }
+
+    header h1 span { color: var(--lime); }
+
+    header p {
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 0.9rem;
+      letter-spacing: 0.04em;
+    }
+
+    /* ── Card ── */
+    .card {
+      background: var(--charcoal);
+      border: 1px solid var(--border);
+      padding: 32px 36px;
+      width: 100%;
+      max-width: 720px;
+    }
+
+    .step-label {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.65rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--lime);
+      margin-bottom: 10px;
+    }
+
+    /* ── Inputs ── */
+    .select-wrapper { position: relative; margin-bottom: 28px; }
     .select-wrapper::after {
-      content: '▾'; position: absolute; right: 16px; top: 50%;
-      transform: translateY(-50%); pointer-events: none; color: #64748b;
+      content: '▾';
+      position: absolute; right: 14px; top: 50%;
+      transform: translateY(-50%);
+      pointer-events: none; color: var(--lime); font-size: 0.9rem;
     }
 
     select, input[type="text"], input[type="date"], textarea {
-      width: 100%; padding: 11px 14px; border: 2px solid #e2e8f0;
-      border-radius: 9px; font-size: 0.95rem; color: #1a202c;
-      background: #f8fafc; font-family: inherit;
-      transition: border-color 0.2s, background 0.2s;
-    }
-    select { padding: 12px 40px 12px 14px; appearance: none; cursor: pointer; }
-    select:focus, input[type="text"]:focus, input[type="date"]:focus, textarea:focus {
-      outline: none; border-color: #6366f1; background: #fff;
-    }
-    textarea { resize: vertical; min-height: 90px; }
-
-    .divider { height: 1px; background: #e2e8f0; margin: 0 0 28px; }
-
-    #fields-container { display: none; }
-    #fields-container.visible { display: block; }
-
-    .auto-date-note {
-      display: flex; align-items: center; gap: 8px;
-      background: #f0fdf4; border: 1.5px solid #bbf7d0;
-      border-radius: 9px; padding: 10px 14px; margin-bottom: 24px;
-      font-size: 0.875rem; color: #166534;
+      width: 100%;
+      background: var(--charcoal2);
+      border: 1px solid var(--border);
+      color: var(--white);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.9rem;
+      padding: 11px 14px;
+      outline: none;
+      transition: border-color 0.15s;
+      border-radius: 0;
+      appearance: none;
     }
 
-    .fields-grid {
-      display: grid; gap: 0;
+    select { padding-right: 38px; cursor: pointer; }
+    select option { background: var(--charcoal); }
+
+    input[type="text"]:focus,
+    input[type="date"]:focus,
+    textarea:focus,
+    select:focus { border-color: var(--lime); }
+
+    input::placeholder, textarea::placeholder { color: #555; }
+    input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(1) brightness(0.4); }
+
+    textarea { resize: vertical; min-height: 88px; }
+
+    /* ── Label ── */
+    label {
+      display: block;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      margin-bottom: 6px;
     }
+
+    /* ── Divider ── */
+    .divider { height: 1px; background: var(--border); margin: 0 0 28px; }
+
+    /* ── Fields grid ── */
+    .fields-grid { display: grid; gap: 0; }
     @media (min-width: 560px) {
       .fields-grid { grid-template-columns: 1fr 1fr; gap: 0 20px; }
       .field-group.full-width { grid-column: 1 / -1; }
     }
-
     .field-group { margin-bottom: 20px; }
-    label { display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 6px; }
 
-    /* Deliverables section */
-    .deliverables-section { grid-column: 1 / -1; margin-bottom: 24px; }
-
-    .deliverables-count-row {
-      display: flex; align-items: center; gap: 12px; margin-bottom: 20px;
+    /* ── Date note ── */
+    .auto-date-note {
+      display: flex; align-items: center; gap: 10px;
+      border-left: 3px solid var(--lime);
+      padding: 10px 14px;
+      background: rgba(230,251,4,0.06);
+      margin-bottom: 24px;
+      font-size: 0.8rem;
+      color: var(--muted);
+      letter-spacing: 0.03em;
     }
-    .deliverables-count-row label { margin-bottom: 0; white-space: nowrap; font-weight: 600; }
-    .deliverables-count-row .count-select-wrap { position: relative; width: 100px; }
-    .deliverables-count-row .count-select-wrap::after {
+    .auto-date-note strong { color: var(--lime); }
+
+    /* ── Deliverables ── */
+    .deliverables-section { grid-column: 1 / -1; margin-bottom: 8px; }
+
+    .deliverables-header {
+      display: flex; align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+      gap: 12px;
+    }
+
+    .deliverables-header .dlabel {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.65rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--white);
+    }
+
+    .count-select-wrap { position: relative; width: 90px; }
+    .count-select-wrap::after {
       content: '▾'; position: absolute; right: 10px; top: 50%;
-      transform: translateY(-50%); pointer-events: none; color: #64748b; font-size: 0.85rem;
+      transform: translateY(-50%); pointer-events: none;
+      color: var(--lime); font-size: 0.8rem;
     }
-    .deliverables-count-row select {
-      width: 100px; padding: 9px 30px 9px 12px;
-    }
+    .count-select-wrap select { width: 90px; padding: 8px 28px 8px 10px; font-size: 0.85rem; }
 
     .deliverable-block {
-      border: 2px solid #e2e8f0; border-radius: 12px;
-      padding: 18px 18px 4px; margin-bottom: 14px;
-      background: #f8fafc; transition: opacity 0.2s;
+      border: 1px solid var(--border);
+      padding: 16px 16px 4px;
+      margin-bottom: 12px;
+      background: var(--black);
     }
     .deliverable-block.hidden { display: none; }
 
     .deliverable-block-title {
-      font-size: 0.8rem; font-weight: 700; text-transform: uppercase;
-      letter-spacing: 0.07em; color: #6366f1; margin-bottom: 14px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.6rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.15em;
+      color: var(--lime); margin-bottom: 12px;
     }
 
-    .deliverable-grid {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 0 16px;
-    }
+    .deliverable-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 16px; }
     @media (max-width: 559px) { .deliverable-grid { grid-template-columns: 1fr; } }
 
-    .btn-generate {
-      display: flex; align-items: center; justify-content: center; gap: 8px;
-      width: 100%; padding: 14px;
-      background: linear-gradient(135deg, #6366f1, #8b5cf6);
-      color: #fff; font-size: 1rem; font-weight: 600;
-      border: none; border-radius: 10px; cursor: pointer;
-      transition: opacity 0.2s, transform 0.1s; margin-top: 4px;
+    /* ── Buttons ── */
+    .btn-primary {
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      width: 100%; padding: 15px 20px;
+      background: var(--lime);
+      color: var(--black);
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.8rem; font-weight: 900;
+      text-transform: uppercase; letter-spacing: 0.15em;
+      border: none; cursor: pointer;
+      border-radius: 0;
+      transition: opacity 0.15s;
+      margin-top: 8px;
     }
-    .btn-generate:hover { opacity: 0.92; }
-    .btn-generate:active { transform: scale(0.98); }
-    .btn-generate.loading { opacity: 0.7; pointer-events: none; }
+    .btn-primary:hover { opacity: 0.88; }
+    .btn-primary:active { opacity: 0.75; }
+    .btn-primary.loading { opacity: 0.5; pointer-events: none; }
+
+    .btn-secondary {
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      width: 100%; padding: 13px 20px;
+      background: transparent;
+      color: var(--white);
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.8rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.12em;
+      border: 1px solid var(--border); cursor: pointer;
+      border-radius: 0;
+      transition: border-color 0.15s, color 0.15s;
+      margin-top: 10px;
+    }
+    .btn-secondary:hover { border-color: var(--white); }
 
     .spinner {
-      width: 18px; height: 18px;
-      border: 2.5px solid rgba(255,255,255,0.4); border-top-color: #fff;
+      width: 16px; height: 16px;
+      border: 2px solid rgba(0,0,0,0.3); border-top-color: var(--black);
       border-radius: 50%; animation: spin 0.7s linear infinite; display: none;
     }
-    .btn-generate.loading .spinner { display: inline-block; }
-    .btn-generate.loading .btn-label { display: none; }
+    .btn-primary.loading .spinner { display: inline-block; }
+    .btn-primary.loading .btn-label { display: none; }
     @keyframes spin { to { transform: rotate(360deg); } }
 
-    .empty-state {
-      text-align: center; padding: 40px 0 8px; color: #94a3b8;
-    }
-    .empty-state svg { width: 52px; height: 52px; margin-bottom: 12px; opacity: 0.4; }
+    /* ── Empty state ── */
+    #fields-container { display: none; }
+    #fields-container.visible { display: block; }
 
+    .empty-state {
+      text-align: center; padding: 40px 0 16px; color: #333;
+    }
+    .empty-state .icon {
+      font-size: 2.5rem; margin-bottom: 12px; display: block;
+      filter: grayscale(1) opacity(0.3);
+    }
+    .empty-state p { font-size: 0.85rem; color: var(--muted); letter-spacing: 0.06em; }
+
+    /* ── Error ── */
     .error-msg {
-      background: #fef2f2; border: 1.5px solid #fecaca; color: #b91c1c;
-      border-radius: 9px; padding: 10px 14px; font-size: 0.875rem;
-      margin-top: 12px; display: none;
+      border-left: 3px solid var(--danger);
+      background: rgba(255,68,68,0.08);
+      color: #ff8080;
+      padding: 10px 14px;
+      font-size: 0.8rem; margin-top: 12px; display: none;
+      letter-spacing: 0.03em;
     }
     .error-msg.visible { display: block; }
+
+    /* ── Success panel ── */
+    #success-panel { display: none; }
+    #success-panel.visible { display: block; }
+    #form-area.hidden { display: none; }
+
+    .success-icon {
+      width: 56px; height: 56px;
+      background: var(--lime);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.5rem;
+      margin-bottom: 20px;
+    }
+
+    .success-title {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 900; font-size: 1.4rem;
+      text-transform: uppercase; letter-spacing: 0.06em;
+      color: var(--white); margin-bottom: 6px;
+    }
+
+    .success-sub {
+      color: var(--muted); font-size: 0.85rem;
+      letter-spacing: 0.04em; margin-bottom: 28px;
+    }
+
+    .action-row {
+      display: flex; gap: 12px; margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+    .action-row .btn-primary { flex: 1; min-width: 180px; margin-top: 0; }
+
+    .link-section {
+      border: 1px solid var(--border);
+      padding: 20px;
+      background: var(--black);
+      margin-bottom: 20px;
+    }
+
+    .link-section-title {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.62rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.18em;
+      color: var(--lime); margin-bottom: 12px;
+    }
+
+    .link-section p {
+      font-size: 0.8rem; color: var(--muted);
+      letter-spacing: 0.03em; margin-bottom: 14px;
+      line-height: 1.6;
+    }
+
+    .link-input-row {
+      display: flex; gap: 0;
+    }
+
+    .link-input-row input {
+      flex: 1;
+      background: var(--charcoal2);
+      border: 1px solid var(--border);
+      border-right: none;
+      color: var(--muted);
+      font-size: 0.78rem;
+      padding: 10px 12px;
+      font-family: 'Inter', monospace;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      cursor: text;
+    }
+
+    .btn-copy {
+      background: var(--lime);
+      color: var(--black);
+      border: none; cursor: pointer;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.7rem; font-weight: 900;
+      text-transform: uppercase; letter-spacing: 0.12em;
+      padding: 10px 18px;
+      white-space: nowrap;
+      transition: opacity 0.15s;
+    }
+    .btn-copy:hover { opacity: 0.85; }
+    .btn-copy.copied { background: #4ade80; color: var(--black); }
+
+    .steps-info {
+      border-top: 1px solid var(--border);
+      padding-top: 16px;
+      margin-top: 4px;
+    }
+
+    .step-item {
+      display: flex; gap: 12px; align-items: flex-start;
+      margin-bottom: 10px;
+    }
+
+    .step-num {
+      width: 20px; height: 20px;
+      background: var(--lime);
+      color: var(--black);
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.65rem; font-weight: 900;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; margin-top: 1px;
+    }
+
+    .step-text { font-size: 0.8rem; color: var(--muted); line-height: 1.5; }
+    .step-text strong { color: var(--white); }
   </style>
 </head>
 <body>
+
   <header>
-    <h1>&#x1F4C4; Contract Generator</h1>
-    <p>Select a contract type, fill in the details, and download your document instantly.</p>
+    <div class="logo-row">
+      <div class="logo-mark">MM</div>
+      <div class="logo-text">Mxster Mxnds Productions LTD</div>
+    </div>
+    <h1>CONTRACT<br><span>GENERATOR</span></h1>
+    <p>Generate, download &amp; send contracts for client e-signature — instantly.</p>
   </header>
 
   <div class="card">
-    <div class="section-label">Step 1 — Choose Contract Type</div>
-    <div class="select-wrapper">
-      <select id="contract-select" onchange="loadFields(this.value)">
-        <option value="">— Select a contract type —</option>
-        {% for contract in contracts %}
-        <option value="{{ contract.id }}">{{ contract.name }}</option>
-        {% endfor %}
-      </select>
-    </div>
-
-    <div id="empty-state" class="empty-state">
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-          d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-      </svg>
-      <p>Select a contract type above to get started.</p>
-    </div>
-
-    <div id="fields-container">
-      <div class="divider"></div>
-      <div class="section-label">Step 2 — Fill in the Details</div>
-
-      <div class="auto-date-note">
-        <span>&#x2705;</span>
-        <span>The <strong>{{DATE}}</strong> field will be automatically filled with today's date.</span>
+    <!-- FORM AREA -->
+    <div id="form-area">
+      <div class="step-label">Step 01 — Select Contract Type</div>
+      <div class="select-wrapper" style="margin-bottom:28px;">
+        <select id="contract-select" onchange="loadFields(this.value)">
+          <option value="">— Choose a contract —</option>
+          {% for contract in contracts %}
+          <option value="{{ contract.id }}">{{ contract.name }}</option>
+          {% endfor %}
+        </select>
       </div>
 
-      <form id="contract-form" method="POST" action="/generate">
-        <input type="hidden" name="contract_id" id="contract_id_input" />
+      <div id="empty-state" class="empty-state">
+        <span class="icon">📄</span>
+        <p>Select a contract type above to begin.</p>
+      </div>
 
-        <div class="fields-grid" id="dynamic-fields"></div>
+      <div id="fields-container">
+        <div class="divider"></div>
+        <div class="step-label">Step 02 — Enter Contract Details</div>
 
-        <div class="error-msg" id="error-msg">Please fill in all required fields.</div>
+        <div class="auto-date-note">
+          <span>⚡</span>
+          <span>The <strong>DATE</strong> placeholder is automatically set to today.</span>
+        </div>
 
-        <button type="button" class="btn-generate" onclick="submitForm()">
-          <span class="btn-label">&#x2B07; Generate &amp; Download</span>
-          <div class="spinner"></div>
+        <form id="contract-form">
+          <input type="hidden" name="contract_id" id="contract_id_input"/>
+          <div class="fields-grid" id="dynamic-fields"></div>
+          <div class="error-msg" id="error-msg">Please fill in all required fields.</div>
+          <button type="button" class="btn-primary" onclick="submitForm()">
+            <span class="btn-label">⚡ Generate Contract</span>
+            <div class="spinner"></div>
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- SUCCESS PANEL -->
+    <div id="success-panel">
+      <div class="success-icon">✓</div>
+      <div class="success-title">Contract Ready</div>
+      <div class="success-sub" id="success-sub">Your document has been generated.</div>
+
+      <div class="action-row">
+        <button class="btn-primary" onclick="downloadProvider()" style="flex:1;">
+          ⬇ Download Your Copy
         </button>
-      </form>
+      </div>
+
+      <div class="link-section">
+        <div class="link-section-title">Client Signing Link</div>
+        <p>Send this link to your client. They'll fill in their signature fields and download their signed copy.</p>
+        <div class="link-input-row">
+          <input type="text" id="sign-link-input" readonly/>
+          <button class="btn-copy" id="copy-btn" onclick="copyLink()">Copy Link</button>
+        </div>
+
+        <div class="steps-info" style="margin-top:16px;">
+          <div class="step-item">
+            <div class="step-num">1</div>
+            <div class="step-text"><strong>You</strong> download your copy using the button above.</div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">2</div>
+            <div class="step-text"><strong>Copy</strong> the signing link and send it to your client via email or DM.</div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">3</div>
+            <div class="step-text"><strong>Client</strong> opens the link, enters their name, and downloads their signed copy.</div>
+          </div>
+        </div>
+      </div>
+
+      <button class="btn-secondary" onclick="resetForm()">← Generate Another Contract</button>
     </div>
   </div>
 
   <script>
+    let currentToken = null;
+    let currentDownloadUrl = null;
+
     function buildDeliverableBlock(index) {
       const block = document.createElement('div');
       block.className = 'deliverable-block';
@@ -201,38 +499,32 @@
       block.innerHTML = `
         <div class="deliverable-block-title">Deliverable ${index}</div>
         <div class="deliverable-grid">
-          ${buildDeliverableField(`Service${index}`, 'Service', 'e.g. Mixing')}
-          ${buildDeliverableField(`Quantity${index}`, 'Quantity', 'e.g. 2 songs')}
-          ${buildDeliverableField(`Turnaround${index}`, 'Turnaround', 'e.g. 5 business days')}
-          ${buildDeliverableField(`Revisions${index}`, 'Revisions', 'e.g. 3 rounds')}
+          ${df(`Service${index}`, 'Service', 'e.g. Mixing')}
+          ${df(`Quantity${index}`, 'Quantity', 'e.g. 2 songs')}
+          ${df(`Turnaround${index}`, 'Turnaround', 'e.g. 5 business days')}
+          ${df(`Revisions${index}`, 'Revisions', 'e.g. 3 rounds')}
         </div>
       `;
       return block;
     }
 
-    function buildDeliverableField(id, label, placeholder) {
-      return `
-        <div class="field-group">
-          <label for="${id}">${label}</label>
-          <input type="text" id="${id}" name="${id}" placeholder="${placeholder}" />
-        </div>
-      `;
+    function df(id, label, placeholder) {
+      return `<div class="field-group">
+        <label for="${id}">${label}</label>
+        <input type="text" id="${id}" name="${id}" placeholder="${placeholder}"/>
+      </div>`;
     }
 
     function updateDeliverableBlocks(count) {
       for (let i = 1; i <= 5; i++) {
         const block = document.getElementById(`deliverable-block-${i}`);
         if (!block) continue;
-        if (i <= count) {
-          block.classList.remove('hidden');
-          block.querySelectorAll('input').forEach(inp => inp.required = true);
-        } else {
-          block.classList.add('hidden');
-          block.querySelectorAll('input').forEach(inp => {
-            inp.required = false;
-            inp.value = '';
-          });
-        }
+        const active = i <= count;
+        block.classList.toggle('hidden', !active);
+        block.querySelectorAll('input').forEach(inp => {
+          inp.required = active;
+          if (!active) inp.value = '';
+        });
       }
     }
 
@@ -241,8 +533,7 @@
       const emptyState = document.getElementById('empty-state');
       const dynFields = document.getElementById('dynamic-fields');
       const contractInput = document.getElementById('contract_id_input');
-      const errorMsg = document.getElementById('error-msg');
-      errorMsg.classList.remove('visible');
+      document.getElementById('error-msg').classList.remove('visible');
 
       if (!contractId) {
         container.classList.remove('visible');
@@ -252,7 +543,7 @@
 
       try {
         const res = await fetch(`/fields/${contractId}`);
-        if (!res.ok) throw new Error('Failed to load');
+        if (!res.ok) throw new Error('Failed to load fields');
         const data = await res.json();
 
         contractInput.value = contractId;
@@ -263,13 +554,13 @@
             const section = document.createElement('div');
             section.className = 'deliverables-section full-width';
 
-            // Count selector row
-            const countRow = document.createElement('div');
-            countRow.className = 'deliverables-count-row field-group full-width';
-            countRow.innerHTML = `
-              <label>Number of Deliverables:</label>
+            const hdr = document.createElement('div');
+            hdr.className = 'deliverables-header field-group full-width';
+            hdr.innerHTML = `
+              <span class="dlabel">Deliverables</span>
               <div class="count-select-wrap">
-                <select id="deliverables_count" name="deliverables_count" onchange="updateDeliverableBlocks(parseInt(this.value))">
+                <select id="deliverables_count" name="deliverables_count"
+                  onchange="updateDeliverableBlocks(parseInt(this.value))">
                   <option value="1">1</option>
                   <option value="2">2</option>
                   <option value="3">3</option>
@@ -278,13 +569,8 @@
                 </select>
               </div>
             `;
-            section.appendChild(countRow);
-
-            // Build 5 deliverable blocks
-            for (let i = 1; i <= 5; i++) {
-              section.appendChild(buildDeliverableBlock(i));
-            }
-
+            section.appendChild(hdr);
+            for (let i = 1; i <= 5; i++) section.appendChild(buildDeliverableBlock(i));
             dynFields.appendChild(section);
             return;
           }
@@ -294,26 +580,24 @@
           const group = document.createElement('div');
           group.className = 'field-group' + (isTextarea ? ' full-width' : '');
 
-          const label = document.createElement('label');
-          label.setAttribute('for', field.id);
-          label.textContent = field.label;
+          const lbl = document.createElement('label');
+          lbl.setAttribute('for', field.id);
+          lbl.textContent = field.label;
 
-          let input;
+          let inp;
           if (isTextarea) {
-            input = document.createElement('textarea');
-            if (field.placeholder) input.placeholder = field.placeholder;
+            inp = document.createElement('textarea');
           } else {
-            input = document.createElement('input');
-            input.type = isDate ? 'date' : 'text';
-            if (field.placeholder) input.placeholder = field.placeholder;
+            inp = document.createElement('input');
+            inp.type = isDate ? 'date' : 'text';
           }
+          inp.id = field.id;
+          inp.name = field.id;
+          inp.required = true;
+          if (field.placeholder) inp.placeholder = field.placeholder;
 
-          input.id = field.id;
-          input.name = field.id;
-          input.required = true;
-
-          group.appendChild(label);
-          group.appendChild(input);
+          group.appendChild(lbl);
+          group.appendChild(inp);
           dynFields.appendChild(group);
         });
 
@@ -326,43 +610,76 @@
 
     function submitForm() {
       const form = document.getElementById('contract-form');
-      const btn = document.querySelector('.btn-generate');
+      const btn = form.querySelector('.btn-primary');
       const errorMsg = document.getElementById('error-msg');
 
-      const inputs = form.querySelectorAll('input[required], textarea[required]');
+      const required = form.querySelectorAll('input[required], textarea[required]');
       let valid = true;
-      inputs.forEach(inp => { if (!inp.value.trim()) valid = false; });
-
+      required.forEach(inp => { if (!inp.value.trim()) valid = false; });
       if (!valid) {
         errorMsg.textContent = 'Please fill in all required fields.';
         errorMsg.classList.add('visible');
         return;
       }
-
       errorMsg.classList.remove('visible');
       btn.classList.add('loading');
 
       fetch('/generate', { method: 'POST', body: new FormData(form) })
         .then(res => {
           if (!res.ok) return res.text().then(t => { throw new Error(t); });
-          return res.blob();
+          return res.json();
         })
-        .then(blob => {
-          const url = URL.createObjectURL(blob);
-          const a = document.createElement('a');
-          a.href = url;
-          const contractId = document.getElementById('contract_id_input').value;
-          a.download = `${contractId}_${new Date().toISOString().split('T')[0]}.docx`;
-          document.body.appendChild(a);
-          a.click();
-          a.remove();
-          URL.revokeObjectURL(url);
+        .then(data => {
+          currentToken = data.token;
+          currentDownloadUrl = data.download_url;
+          document.getElementById('sign-link-input').value = data.sign_url;
+          document.getElementById('success-sub').textContent =
+            `"${data.contract_name}" has been generated.`;
+          document.getElementById('form-area').classList.add('hidden');
+          document.getElementById('success-panel').classList.add('visible');
         })
         .catch(err => {
           errorMsg.textContent = 'Generation failed: ' + err.message;
           errorMsg.classList.add('visible');
         })
         .finally(() => btn.classList.remove('loading'));
+    }
+
+    function downloadProvider() {
+      if (!currentDownloadUrl) return;
+      const a = document.createElement('a');
+      a.href = currentDownloadUrl;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+    }
+
+    function copyLink() {
+      const input = document.getElementById('sign-link-input');
+      const btn = document.getElementById('copy-btn');
+      navigator.clipboard.writeText(input.value).then(() => {
+        btn.textContent = '✓ Copied!';
+        btn.classList.add('copied');
+        setTimeout(() => {
+          btn.textContent = 'Copy Link';
+          btn.classList.remove('copied');
+        }, 2000);
+      }).catch(() => {
+        input.select();
+        document.execCommand('copy');
+      });
+    }
+
+    function resetForm() {
+      currentToken = null;
+      currentDownloadUrl = null;
+      document.getElementById('success-panel').classList.remove('visible');
+      document.getElementById('form-area').classList.remove('hidden');
+      document.getElementById('contract-select').value = '';
+      document.getElementById('fields-container').classList.remove('visible');
+      document.getElementById('empty-state').style.display = '';
+      document.getElementById('copy-btn').textContent = 'Copy Link';
+      document.getElementById('copy-btn').classList.remove('copied');
     }
   </script>
 </body>

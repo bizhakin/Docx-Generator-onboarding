@@ -4,6 +4,10 @@
       "id": "custom_artist_package",
       "name": "Custom Artist Package (Mxster Mxnds)",
       "template": "custom_artist_package.docx",
+      "client_signature_fields": [
+        { "id": "Clients_Printed_Name", "label": "Your Full Printed Name" },
+        { "id": "Clients_Artist_Name", "label": "Your Artist / Stage Name" }
+      ],
       "fields": [
         { "id": "Full_Name", "label": "Client Full Name", "type": "text", "placeholder": "Jane Smith" },
         { "id": "Email", "label": "Client Email", "type": "text", "placeholder": "jane@email.com" },
@@ -11,15 +15,16 @@
         { "id": "Price", "label": "Total Investment ($)", "type": "text", "placeholder": "500.00" },
         { "type": "deliverables" },
         { "id": "Start_Date", "label": "Engagement Start Date", "type": "date", "placeholder": "" },
-        { "id": "End_Date", "label": "Engagement End Date", "type": "date", "placeholder": "" },
-        { "id": "Clients_Printed_Name", "label": "Client Printed Name (Signature)", "type": "text", "placeholder": "Jane Smith" },
-        { "id": "Clients_Artist_Name", "label": "Client Artist / Stage Name (Signature)", "type": "text", "placeholder": "DJ Example" }
+        { "id": "End_Date", "label": "Engagement End Date", "type": "date", "placeholder": "" }
       ]
     },
     {
       "id": "service_agreement",
       "name": "Service Agreement",
       "template": "service_agreement.docx",
+      "client_signature_fields": [
+        { "id": "CLIENT_SIGNATURE_NAME", "label": "Your Full Printed Name" }
+      ],
       "fields": [
         { "id": "CLIENT_NAME", "label": "Client Name", "type": "text", "placeholder": "Acme Corp" },
         { "id": "CLIENT_ADDRESS", "label": "Client Address", "type": "text", "placeholder": "123 Main St, City, State 12345" },
@@ -35,6 +40,9 @@
       "id": "nda",
       "name": "Non-Disclosure Agreement (NDA)",
       "template": "nda.docx",
+      "client_signature_fields": [
+        { "id": "RECEIVING_PARTY_SIGNATURE", "label": "Your Full Printed Name (Receiving Party)" }
+      ],
       "fields": [
         { "id": "DISCLOSING_PARTY", "label": "Disclosing Party", "type": "text", "placeholder": "Your Company LLC" },
         { "id": "RECEIVING_PARTY", "label": "Receiving Party", "type": "text", "placeholder": "Partner Corp" },
@@ -47,6 +55,9 @@
       "id": "employment_offer",
       "name": "Employment Offer Letter",
       "template": "employment_offer.docx",
+      "client_signature_fields": [
+        { "id": "CANDIDATE_ACCEPTANCE_NAME", "label": "Your Full Printed Name" }
+      ],
       "fields": [
         { "id": "CANDIDATE_NAME", "label": "Candidate Full Name", "type": "text", "placeholder": "Jane Smith" },
         { "id": "POSITION_TITLE", "label": "Position Title", "type": "text", "placeholder": "Software Engineer" },
@@ -62,6 +73,9 @@
       "id": "freelance_contract",
       "name": "Freelance Contract",
       "template": "freelance_contract.docx",
+      "client_signature_fields": [
+        { "id": "CLIENT_SIGNATURE_NAME", "label": "Your Full Printed Name (Client)" }
+      ],
       "fields": [
         { "id": "CLIENT_NAME", "label": "Client Name", "type": "text", "placeholder": "Acme Corp" },
         { "id": "FREELANCER_NAME", "label": "Freelancer Name", "type": "text", "placeholder": "Jane Smith" },

@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sign Your Contract — Mxster Mxnds</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black: #000000;
+      --charcoal: #1A1A1A;
+      --charcoal2: #242424;
+      --border: #2E2E2E;
+      --lime: #E6FB04;
+      --white: #FFFFFF;
+      --muted: #888888;
+      --danger: #FF4444;
+      --success: #4ade80;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--black);
+      color: var(--white);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 0 16px 80px;
+    }
+
+    header {
+      width: 100%;
+      max-width: 600px;
+      padding: 40px 0 28px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 36px;
+    }
+
+    .logo-row {
+      display: flex; align-items: center; gap: 10px; margin-bottom: 8px;
+    }
+    .logo-mark {
+      width: 30px; height: 30px;
+      background: var(--lime);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Montserrat', sans-serif; font-weight: 900;
+      font-size: 13px; color: var(--black); flex-shrink: 0;
+    }
+    .logo-text {
+      font-family: 'Montserrat', sans-serif; font-weight: 700;
+      font-size: 0.6rem; letter-spacing: 0.2em;
+      text-transform: uppercase; color: var(--muted);
+    }
+
+    .invite-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(230,251,4,0.1);
+      border: 1px solid rgba(230,251,4,0.3);
+      color: var(--lime);
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.6rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.16em;
+      padding: 4px 10px; margin-bottom: 14px;
+    }
+
+    h1 {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 900; font-size: clamp(1.5rem, 4vw, 2.2rem);
+      text-transform: uppercase; letter-spacing: 0.04em;
+      line-height: 1.1; color: var(--white);
+    }
+    h1 span { color: var(--lime); }
+
+    .sub {
+      margin-top: 8px; color: var(--muted);
+      font-size: 0.85rem; letter-spacing: 0.03em;
+    }
+
+    /* Card */
+    .card {
+      background: var(--charcoal);
+      border: 1px solid var(--border);
+      padding: 28px 32px;
+      width: 100%; max-width: 600px;
+      margin-bottom: 16px;
+    }
+
+    .section-label {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.6rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.18em;
+      color: var(--lime); margin-bottom: 14px;
+    }
+
+    /* Summary table */
+    .summary-grid {
+      display: grid; gap: 10px;
+    }
+    .summary-row {
+      display: flex; justify-content: space-between; align-items: baseline;
+      gap: 12px; padding-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+    }
+    .summary-row:last-child { border-bottom: none; padding-bottom: 0; }
+    .s-key {
+      font-size: 0.72rem; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 0.1em;
+      color: var(--muted); white-space: nowrap;
+    }
+    .s-val { font-size: 0.9rem; color: var(--white); text-align: right; }
+
+    .divider { height: 1px; background: var(--border); margin: 24px 0; }
+
+    /* Form inputs */
+    .field-group { margin-bottom: 20px; }
+    label {
+      display: block;
+      font-size: 0.72rem; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 0.1em;
+      color: var(--muted); margin-bottom: 6px;
+    }
+    input[type="text"] {
+      width: 100%;
+      background: var(--charcoal2);
+      border: 1px solid var(--border);
+      color: var(--white);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.95rem; padding: 12px 14px;
+      outline: none; border-radius: 0;
+    }
+    input[type="text"]:focus { border-color: var(--lime); }
+    input::placeholder { color: #555; }
+
+    /* Acknowledgment */
+    .ack-box {
+      border: 1px solid var(--border);
+      background: var(--black);
+      padding: 16px;
+      margin-bottom: 20px;
+      font-size: 0.8rem; color: var(--muted);
+      line-height: 1.7;
+    }
+    .ack-box strong { color: var(--white); }
+
+    /* Buttons */
+    .btn-primary {
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      width: 100%; padding: 15px 20px;
+      background: var(--lime); color: var(--black);
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.8rem; font-weight: 900;
+      text-transform: uppercase; letter-spacing: 0.15em;
+      border: none; cursor: pointer; border-radius: 0;
+      transition: opacity 0.15s;
+    }
+    .btn-primary:hover { opacity: 0.88; }
+    .btn-primary.loading { opacity: 0.5; pointer-events: none; }
+
+    .spinner {
+      width: 16px; height: 16px;
+      border: 2px solid rgba(0,0,0,0.3); border-top-color: var(--black);
+      border-radius: 50%; animation: spin 0.7s linear infinite; display: none;
+    }
+    .btn-primary.loading .spinner { display: inline-block; }
+    .btn-primary.loading .btn-label { display: none; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Error */
+    .error-msg {
+      border-left: 3px solid var(--danger);
+      background: rgba(255,68,68,0.08); color: #ff8080;
+      padding: 10px 14px; font-size: 0.8rem;
+      margin-top: 12px; display: none;
+    }
+    .error-msg.visible { display: block; }
+
+    /* Success state */
+    #success-state { display: none; }
+    #success-state.visible { display: block; }
+    #sign-form-area.hidden { display: none; }
+
+    .success-box {
+      border: 1px solid var(--success);
+      background: rgba(74,222,128,0.06);
+      padding: 28px 24px; text-align: center;
+    }
+    .success-box .s-icon {
+      font-size: 2.5rem; margin-bottom: 14px; display: block;
+    }
+    .success-box h2 {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 900; font-size: 1.3rem;
+      text-transform: uppercase; letter-spacing: 0.06em;
+      color: var(--success); margin-bottom: 8px;
+    }
+    .success-box p {
+      color: var(--muted); font-size: 0.85rem; line-height: 1.6;
+    }
+
+    footer {
+      margin-top: 32px; color: #333;
+      font-size: 0.7rem; text-align: center; letter-spacing: 0.08em;
+    }
+    footer a { color: #555; text-decoration: none; }
+    footer a:hover { color: var(--lime); }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="logo-row">
+      <div class="logo-mark">MM</div>
+      <div class="logo-text">Mxster Mxnds Productions LTD</div>
+    </div>
+    <div class="invite-badge">✦ You've been invited to sign</div>
+    <h1>Review &amp;<br><span>Sign Your Contract</span></h1>
+    <p class="sub">{{ meta.contract_name }}</p>
+  </header>
+
+  <!-- Contract Summary -->
+  <div class="card">
+    <div class="section-label">Contract Summary</div>
+    <div class="summary-grid">
+      <div class="summary-row">
+        <span class="s-key">Contract Type</span>
+        <span class="s-val">{{ meta.contract_name }}</span>
+      </div>
+      {% if meta.form_data.get('Full_Name') %}
+      <div class="summary-row">
+        <span class="s-key">Client</span>
+        <span class="s-val">{{ meta.form_data.Full_Name }}</span>
+      </div>
+      {% endif %}
+      {% if meta.form_data.get('Artist_Name') %}
+      <div class="summary-row">
+        <span class="s-key">Artist / Stage Name</span>
+        <span class="s-val">{{ meta.form_data.Artist_Name }}</span>
+      </div>
+      {% endif %}
+      {% if meta.form_data.get('Price') %}
+      <div class="summary-row">
+        <span class="s-key">Total Investment</span>
+        <span class="s-val">${{ meta.form_data.Price }}</span>
+      </div>
+      {% endif %}
+      {% if meta.form_data.get('Start_Date') %}
+      <div class="summary-row">
+        <span class="s-key">Start Date</span>
+        <span class="s-val">{{ meta.form_data.Start_Date }}</span>
+      </div>
+      {% endif %}
+      {% if meta.form_data.get('End_Date') %}
+      <div class="summary-row">
+        <span class="s-key">End Date</span>
+        <span class="s-val">{{ meta.form_data.End_Date }}</span>
+      </div>
+      {% endif %}
+      {% if meta.form_data.get('CLIENT_NAME') %}
+      <div class="summary-row">
+        <span class="s-key">Client</span>
+        <span class="s-val">{{ meta.form_data.CLIENT_NAME }}</span>
+      </div>
+      {% endif %}
+      <div class="summary-row">
+        <span class="s-key">Prepared by</span>
+        <span class="s-val">Mxster Mxnds Productions LTD</span>
+      </div>
+      <div class="summary-row">
+        <span class="s-key">Generated on</span>
+        <span class="s-val">{{ meta.created_at[:10] }}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Signing Form -->
+  <div class="card" id="sign-form-area">
+    <div class="section-label">Your Signature</div>
+
+    <div class="ack-box">
+      By entering your name below and clicking <strong>Sign &amp; Download</strong>, you confirm that you have
+      read and agree to all terms outlined in the <strong>{{ meta.contract_name }}</strong>.
+      This constitutes your electronic acknowledgment of the agreement.
+    </div>
+
+    <form id="sign-form" method="POST" action="/sign/{{ token }}/submit">
+      {% for sig_field in meta.client_signature_fields %}
+      <div class="field-group">
+        <label for="{{ sig_field.id }}">{{ sig_field.label }}</label>
+        <input type="text" id="{{ sig_field.id }}" name="{{ sig_field.id }}"
+               placeholder="Type your full name" required/>
+      </div>
+      {% endfor %}
+
+      {% if not meta.client_signature_fields %}
+      <div class="field-group">
+        <label for="generic_sig">Your Full Printed Name</label>
+        <input type="text" id="generic_sig" name="generic_sig"
+               placeholder="Type your full name" required/>
+      </div>
+      {% endif %}
+
+      <div class="error-msg" id="error-msg">Please fill in all required fields.</div>
+
+      <button type="button" class="btn-primary" onclick="submitSign()">
+        <span class="btn-label">✍ Sign &amp; Download</span>
+        <div class="spinner"></div>
+      </button>
+    </form>
+
+    <div id="success-state">
+      <div class="success-box">
+        <span class="s-icon">✅</span>
+        <h2>Signed &amp; Downloaded</h2>
+        <p>Your signed contract has been downloaded. Keep it for your records.<br/>
+        The service provider has been notified of your agreement.</p>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    Powered by <a href="/">Mxster Mxnds Contract Generator</a> &nbsp;·&nbsp;
+    mxstermxndsprods.store
+  </footer>
+
+  <script>
+    function submitSign() {
+      const form = document.getElementById('sign-form');
+      const btn = form.querySelector('.btn-primary');
+      const errorMsg = document.getElementById('error-msg');
+      const required = form.querySelectorAll('input[required]');
+      let valid = true;
+      required.forEach(inp => { if (!inp.value.trim()) valid = false; });
+      if (!valid) {
+        errorMsg.classList.add('visible');
+        return;
+      }
+      errorMsg.classList.remove('visible');
+      btn.classList.add('loading');
+
+      fetch(form.action, { method: 'POST', body: new FormData(form) })
+        .then(res => {
+          if (!res.ok) return res.text().then(t => { throw new Error(t); });
+          return res.blob();
+        })
+        .then(blob => {
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = 'signed_contract.docx';
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+          URL.revokeObjectURL(url);
+          // Show success
+          form.querySelectorAll('.field-group, .ack-box').forEach(el => el.style.display = 'none');
+          btn.style.display = 'none';
+          document.getElementById('success-state').classList.add('visible');
+        })
+        .catch(err => {
+          errorMsg.textContent = 'Error: ' + err.message;
+          errorMsg.classList.add('visible');
+        })
+        .finally(() => btn.classList.remove('loading'));
+    }
+  </script>
+</body>
+</html>
