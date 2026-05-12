@@ -2,7 +2,7 @@
   "contracts": [
     {
       "id": "custom_artist_package",
-      "name": "Custom Artist Package (Mxster Mxnds)",
+      "name": "Custom Artist Package",
       "template": "custom_artist_package.docx",
       "client_signature_fields": [
         { "id": "Clients_Printed_Name", "label": "Your Full Printed Name" },
@@ -16,6 +16,115 @@
         { "type": "deliverables" },
         { "id": "Start_Date", "label": "Engagement Start Date", "type": "date", "placeholder": "" },
         { "id": "End_Date", "label": "Engagement End Date", "type": "date", "placeholder": "" }
+      ]
+    },
+    {
+      "id": "deposit_50",
+      "name": "Service Deposit Agreement ($50)",
+      "template": "deposit_50.docx",
+      "client_signature_fields": [
+        { "id": "Clients_Printed_Name", "label": "Your Full Printed Name" }
+      ],
+      "fields": [
+        { "id": "Full_Name", "label": "Client Full Name", "type": "text", "placeholder": "Jane Smith" },
+        { "id": "Email", "label": "Client Email", "type": "text", "placeholder": "jane@email.com" }
+      ]
+    },
+    {
+      "id": "master_50",
+      "name": "Pro Stereo Master ($50)",
+      "template": "master_50.docx",
+      "client_signature_fields": [
+        { "id": "Clients_Printed_Name", "label": "Your Full Printed Name" }
+      ],
+      "fields": [
+        { "id": "Full_Name", "label": "Client Full Name", "type": "text", "placeholder": "Jane Smith" },
+        { "id": "Email", "label": "Client Email", "type": "text", "placeholder": "jane@email.com" }
+      ]
+    },
+    {
+      "id": "stdmix_60",
+      "name": "Standard Mix — Essential ($60)",
+      "template": "stdmix_60.docx",
+      "client_signature_fields": [
+        { "id": "Clients_Printed_Name", "label": "Your Full Printed Name" }
+      ],
+      "fields": [
+        { "id": "Full_Name", "label": "Client Full Name", "type": "text", "placeholder": "Jane Smith" },
+        { "id": "Email", "label": "Client Email", "type": "text", "placeholder": "jane@email.com" }
+      ]
+    },
+    {
+      "id": "hifi_150",
+      "name": "High-Fidelity Studio Mix ($150)",
+      "template": "hifi_150.docx",
+      "client_signature_fields": [
+        { "id": "Clients_Printed_Name", "label": "Your Full Printed Name" }
+      ],
+      "fields": [
+        { "id": "Full_Name", "label": "Client Full Name", "type": "text", "placeholder": "Jane Smith" },
+        { "id": "Email", "label": "Client Email", "type": "text", "placeholder": "jane@email.com" }
+      ]
+    },
+    {
+      "id": "ep_mastering_200",
+      "name": "EP Mastering Bundle — 5 Songs ($200)",
+      "template": "ep_mastering_200.docx",
+      "client_signature_fields": [
+        { "id": "Clients_Printed_Name", "label": "Your Full Printed Name" }
+      ],
+      "fields": [
+        { "id": "Full_Name", "label": "Client Full Name", "type": "text", "placeholder": "Jane Smith" },
+        { "id": "Email", "label": "Client Email", "type": "text", "placeholder": "jane@email.com" }
+      ]
+    },
+    {
+      "id": "promix_250",
+      "name": "Pro Studio Mix + Vocal Tuning ($250)",
+      "template": "promix_250.docx",
+      "client_signature_fields": [
+        { "id": "Clients_Printed_Name", "label": "Your Full Printed Name" }
+      ],
+      "fields": [
+        { "id": "Full_Name", "label": "Client Full Name", "type": "text", "placeholder": "Jane Smith" },
+        { "id": "Email", "label": "Client Email", "type": "text", "placeholder": "jane@email.com" }
+      ]
+    },
+    {
+      "id": "probundle_300",
+      "name": "Pro Single Bundle + Pitch Correction ($300)",
+      "template": "probundle_300.docx",
+      "client_signature_fields": [
+        { "id": "Clients_Printed_Name", "label": "Your Full Printed Name" }
+      ],
+      "fields": [
+        { "id": "Full_Name", "label": "Client Full Name", "type": "text", "placeholder": "Jane Smith" },
+        { "id": "Email", "label": "Client Email", "type": "text", "placeholder": "jane@email.com" }
+      ]
+    },
+    {
+      "id": "radio_600",
+      "name": "Radio-Ready Single — Mix & Master ($600)",
+      "template": "radio_600.docx",
+      "client_signature_fields": [
+        { "id": "Clients_Printed_Name", "label": "Your Full Printed Name" }
+      ],
+      "fields": [
+        { "id": "Full_Name", "label": "Client Full Name", "type": "text", "placeholder": "Jane Smith" },
+        { "id": "Email", "label": "Client Email", "type": "text", "placeholder": "jane@email.com" }
+      ]
+    },
+    {
+      "id": "deluxe_800",
+      "name": "Deluxe EP Bundle — 4–9 Songs ($800)",
+      "template": "deluxe_800.docx",
+      "client_signature_fields": [
+        { "id": "Clients_Printed_Name", "label": "Your Full Printed Name" }
+      ],
+      "fields": [
+        { "id": "Full_Name", "label": "Client Full Name", "type": "text", "placeholder": "Jane Smith" },
+        { "id": "Email", "label": "Client Email", "type": "text", "placeholder": "jane@email.com" },
+        { "id": "Track_Qty", "label": "Confirmed Track Count (4–9)", "type": "text", "placeholder": "6" }
       ]
     },
     {
@@ -46,72 +155,78 @@
       ]
     },
     {
-      "id": "service_agreement",
-      "name": "Service Agreement",
-      "template": "service_agreement.docx",
+      "id": "exec_2000",
+      "name": "Mxster Mxnds Executive Bundle ($2,000)",
+      "template": "exec_2000.docx",
       "client_signature_fields": [
-        { "id": "CLIENT_SIGNATURE_NAME", "label": "Your Full Printed Name" }
+        { "id": "Clients_Printed_Name", "label": "Your Full Printed Name" }
       ],
       "fields": [
-        { "id": "CLIENT_NAME", "label": "Client Name", "type": "text", "placeholder": "Acme Corp" },
-        { "id": "CLIENT_ADDRESS", "label": "Client Address", "type": "text", "placeholder": "123 Main St, City, State 12345" },
-        { "id": "SERVICE_DESCRIPTION", "label": "Service Description", "type": "textarea", "placeholder": "Describe the services to be provided..." },
-        { "id": "START_DATE", "label": "Start Date", "type": "date", "placeholder": "" },
-        { "id": "END_DATE", "label": "End Date", "type": "date", "placeholder": "" },
-        { "id": "PAYMENT_AMOUNT", "label": "Payment Amount ($)", "type": "text", "placeholder": "5,000.00" },
-        { "id": "PAYMENT_TERMS", "label": "Payment Terms", "type": "text", "placeholder": "Net 30" },
-        { "id": "PROVIDER_NAME", "label": "Service Provider Name", "type": "text", "placeholder": "Your Company LLC" }
+        { "id": "Full_Name", "label": "Client Full Name", "type": "text", "placeholder": "Jane Smith" },
+        { "id": "Email", "label": "Client Email", "type": "text", "placeholder": "jane@email.com" },
+        { "id": "STAGE_Name", "label": "Artist / Stage Name", "type": "text", "placeholder": "DJ Example" },
+        { "id": "START_Date", "label": "Bundle Start Date", "type": "date", "placeholder": "" },
+        { "id": "END_Date", "label": "Bundle End Date (12 months from start)", "type": "date", "placeholder": "" }
       ]
     },
     {
-      "id": "nda",
-      "name": "Non-Disclosure Agreement (NDA)",
-      "template": "nda.docx",
+      "id": "elite_2500",
+      "name": "Elite Album Experience ($2,500)",
+      "template": "elite_2500.docx",
       "client_signature_fields": [
-        { "id": "RECEIVING_PARTY_SIGNATURE", "label": "Your Full Printed Name (Receiving Party)" }
+        { "id": "Clients_Printed_Name", "label": "Your Full Printed Name" }
       ],
       "fields": [
-        { "id": "DISCLOSING_PARTY", "label": "Disclosing Party", "type": "text", "placeholder": "Your Company LLC" },
-        { "id": "RECEIVING_PARTY", "label": "Receiving Party", "type": "text", "placeholder": "Partner Corp" },
-        { "id": "PURPOSE", "label": "Purpose of Disclosure", "type": "textarea", "placeholder": "Describe the purpose of sharing confidential information..." },
-        { "id": "CONFIDENTIALITY_PERIOD", "label": "Confidentiality Period (years)", "type": "text", "placeholder": "2" },
-        { "id": "GOVERNING_LAW", "label": "Governing Law (State/Country)", "type": "text", "placeholder": "California, USA" }
+        { "id": "Full_Name", "label": "Client Full Name", "type": "text", "placeholder": "Jane Smith" },
+        { "id": "Email", "label": "Client Email", "type": "text", "placeholder": "jane@email.com" },
+        { "id": "STAGE_Name", "label": "Artist / Stage Name", "type": "text", "placeholder": "DJ Example" },
+        { "id": "START_Date", "label": "Engagement Start Date", "type": "date", "placeholder": "" },
+        { "id": "END_Date", "label": "Engagement End Date (12 months from start)", "type": "date", "placeholder": "" }
       ]
     },
     {
-      "id": "employment_offer",
-      "name": "Employment Offer Letter",
-      "template": "employment_offer.docx",
+      "id": "launchpad_5000",
+      "name": "The Artist Launchpad ($5,000)",
+      "template": "launchpad_5000.docx",
       "client_signature_fields": [
-        { "id": "CANDIDATE_ACCEPTANCE_NAME", "label": "Your Full Printed Name" }
+        { "id": "Clients_Printed_Name", "label": "Your Full Printed Name" }
       ],
       "fields": [
-        { "id": "CANDIDATE_NAME", "label": "Candidate Full Name", "type": "text", "placeholder": "Jane Smith" },
-        { "id": "POSITION_TITLE", "label": "Position Title", "type": "text", "placeholder": "Software Engineer" },
-        { "id": "DEPARTMENT", "label": "Department", "type": "text", "placeholder": "Engineering" },
-        { "id": "START_DATE", "label": "Start Date", "type": "date", "placeholder": "" },
-        { "id": "SALARY", "label": "Annual Salary ($)", "type": "text", "placeholder": "85,000" },
-        { "id": "MANAGER_NAME", "label": "Hiring Manager Name", "type": "text", "placeholder": "John Doe" },
-        { "id": "COMPANY_NAME", "label": "Company Name", "type": "text", "placeholder": "Acme Corp" },
-        { "id": "OFFER_EXPIRY", "label": "Offer Expiry Date", "type": "date", "placeholder": "" }
+        { "id": "Full_Name", "label": "Client Full Name", "type": "text", "placeholder": "Jane Smith" },
+        { "id": "Email", "label": "Client Email", "type": "text", "placeholder": "jane@email.com" },
+        { "id": "STAGE_Name", "label": "Artist / Stage Name", "type": "text", "placeholder": "DJ Example" },
+        { "id": "START_Date", "label": "Engagement Start Date", "type": "date", "placeholder": "" },
+        { "id": "END_Date", "label": "Engagement End Date (12 months from start)", "type": "date", "placeholder": "" }
       ]
     },
     {
-      "id": "freelance_contract",
-      "name": "Freelance Contract",
-      "template": "freelance_contract.docx",
+      "id": "execpartner_7500",
+      "name": "The Executive Partnership ($7,500)",
+      "template": "execpartner_7500.docx",
       "client_signature_fields": [
-        { "id": "CLIENT_SIGNATURE_NAME", "label": "Your Full Printed Name (Client)" }
+        { "id": "Clients_Printed_Name", "label": "Your Full Printed Name" }
       ],
       "fields": [
-        { "id": "CLIENT_NAME", "label": "Client Name", "type": "text", "placeholder": "Acme Corp" },
-        { "id": "FREELANCER_NAME", "label": "Freelancer Name", "type": "text", "placeholder": "Jane Smith" },
-        { "id": "PROJECT_NAME", "label": "Project Name", "type": "text", "placeholder": "Website Redesign" },
-        { "id": "PROJECT_SCOPE", "label": "Project Scope", "type": "textarea", "placeholder": "Describe the deliverables and scope of work..." },
-        { "id": "HOURLY_RATE", "label": "Hourly Rate ($)", "type": "text", "placeholder": "150" },
-        { "id": "ESTIMATED_HOURS", "label": "Estimated Hours", "type": "text", "placeholder": "40" },
-        { "id": "DEADLINE", "label": "Project Deadline", "type": "date", "placeholder": "" },
-        { "id": "PAYMENT_SCHEDULE", "label": "Payment Schedule", "type": "text", "placeholder": "50% upfront, 50% on delivery" }
+        { "id": "Full_Name", "label": "Client Full Name", "type": "text", "placeholder": "Jane Smith" },
+        { "id": "Email", "label": "Client Email", "type": "text", "placeholder": "jane@email.com" },
+        { "id": "STAGE_Name", "label": "Artist / Stage Name", "type": "text", "placeholder": "DJ Example" },
+        { "id": "START_Date", "label": "Engagement Start Date", "type": "date", "placeholder": "" },
+        { "id": "END_Date", "label": "Engagement End Date (12 months from start)", "type": "date", "placeholder": "" }
+      ]
+    },
+    {
+      "id": "legacy_10000",
+      "name": "The Legacy 360 — 12-Month Career Partnership ($10,000)",
+      "template": "legacy_10000.docx",
+      "client_signature_fields": [
+        { "id": "Clients_Printed_Name", "label": "Your Full Printed Name" }
+      ],
+      "fields": [
+        { "id": "Full_Name", "label": "Client Full Name", "type": "text", "placeholder": "Jane Smith" },
+        { "id": "Email", "label": "Client Email", "type": "text", "placeholder": "jane@email.com" },
+        { "id": "STAGE_Name", "label": "Artist / Stage Name", "type": "text", "placeholder": "DJ Example" },
+        { "id": "START_Date", "label": "Engagement Start Date", "type": "date", "placeholder": "" },
+        { "id": "END_Date", "label": "Engagement End Date (12 months from start)", "type": "date", "placeholder": "" }
       ]
     }
   ]
