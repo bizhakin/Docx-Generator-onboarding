@@ -455,7 +455,7 @@
       <div class="success-sub" id="success-sub">Your document has been generated.</div>
 
       <div class="action-row">
-        <button class="btn-primary" onclick="downloadProvider()" style="flex:1;">
+        <button class="btn-primary" onclick="downloadProvider()" style="flex:1; margin-top:0;">
           ⬇ Download Your Copy
         </button>
       </div>
@@ -465,23 +465,34 @@
         <p>Send this link to your client. They'll fill in their signature fields and download their signed copy.</p>
         <div class="link-input-row">
           <input type="text" id="sign-link-input" readonly/>
-          <button class="btn-copy" id="copy-btn" onclick="copyLink()">Copy Link</button>
+          <button class="btn-copy" id="copy-btn" onclick="copyLink('sign-link-input','copy-btn')">Copy Link</button>
         </div>
+      </div>
 
+      <div class="link-section">
+        <div class="link-section-title">Your Status &amp; Download Page</div>
+        <p>Bookmark this link. Once your client signs, you'll be notified by email and can download the fully signed contract here anytime.</p>
+        <div class="link-input-row">
+          <input type="text" id="status-link-input" readonly/>
+          <button class="btn-copy" id="copy-btn-status" onclick="copyLink('status-link-input','copy-btn-status')">Copy</button>
+        </div>
         <div class="steps-info" style="margin-top:16px;">
           <div class="step-item">
             <div class="step-num">1</div>
-            <div class="step-text"><strong>You</strong> download your copy using the button above.</div>
+            <div class="step-text"><strong>Send</strong> the signing link to your client via email or DM.</div>
           </div>
           <div class="step-item">
             <div class="step-num">2</div>
-            <div class="step-text"><strong>Copy</strong> the signing link and send it to your client via email or DM.</div>
+            <div class="step-text"><strong>Client</strong> signs — you get an email with the signed copy attached.</div>
           </div>
           <div class="step-item">
             <div class="step-num">3</div>
-            <div class="step-text"><strong>Client</strong> opens the link, enters their name, and downloads their signed copy.</div>
+            <div class="step-text"><strong>Visit</strong> your status page anytime to download the final signed contract.</div>
           </div>
         </div>
+        <a id="status-page-link" href="#" target="_blank" class="btn-secondary" style="margin-top:16px;display:flex;text-decoration:none;">
+          ↗ Open Status Page
+        </a>
       </div>
 
       <button class="btn-secondary" onclick="resetForm()">← Generate Another Contract</button>
@@ -633,6 +644,8 @@
           currentToken = data.token;
           currentDownloadUrl = data.download_url;
           document.getElementById('sign-link-input').value = data.sign_url;
+          document.getElementById('status-link-input').value = data.status_url;
+          document.getElementById('status-page-link').href = data.status_url;
           document.getElementById('success-sub').textContent =
             `"${data.contract_name}" has been generated.`;
           document.getElementById('form-area').classList.add('hidden');
@@ -654,20 +667,15 @@
       a.remove();
     }
 
-    function copyLink() {
-      const input = document.getElementById('sign-link-input');
-      const btn = document.getElementById('copy-btn');
+    function copyLink(inputId, btnId) {
+      const input = document.getElementById(inputId);
+      const btn = document.getElementById(btnId);
+      const original = btn.textContent;
       navigator.clipboard.writeText(input.value).then(() => {
         btn.textContent = '✓ Copied!';
         btn.classList.add('copied');
-        setTimeout(() => {
-          btn.textContent = 'Copy Link';
-          btn.classList.remove('copied');
-        }, 2000);
-      }).catch(() => {
-        input.select();
-        document.execCommand('copy');
-      });
+        setTimeout(() => { btn.textContent = original; btn.classList.remove('copied'); }, 2000);
+      }).catch(() => { input.select(); document.execCommand('copy'); });
     }
 
     function resetForm() {
@@ -678,8 +686,6 @@
       document.getElementById('contract-select').value = '';
       document.getElementById('fields-container').classList.remove('visible');
       document.getElementById('empty-state').style.display = '';
-      document.getElementById('copy-btn').textContent = 'Copy Link';
-      document.getElementById('copy-btn').classList.remove('copied');
     }
   </script>
 </body>

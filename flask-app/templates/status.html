@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Contract Status — Mxster Mxnds</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --black: #000000; --charcoal: #1A1A1A; --charcoal2: #242424;
+      --border: #2E2E2E; --lime: #E6FB04; --white: #FFFFFF;
+      --muted: #888888; --success: #4ade80; --pending: #facc15;
+    }
+    body {
+      font-family: 'Inter', sans-serif; background: var(--black);
+      color: var(--white); min-height: 100vh;
+      display: flex; flex-direction: column; align-items: center;
+      padding: 0 16px 80px;
+    }
+    header {
+      width: 100%; max-width: 640px;
+      padding: 40px 0 28px; border-bottom: 1px solid var(--border);
+      margin-bottom: 36px;
+    }
+    .logo-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+    .logo-mark {
+      width: 30px; height: 30px; background: var(--lime);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Montserrat', sans-serif; font-weight: 900;
+      font-size: 13px; color: var(--black);
+    }
+    .logo-text {
+      font-family: 'Montserrat', sans-serif; font-weight: 700;
+      font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted);
+    }
+    h1 {
+      font-family: 'Montserrat', sans-serif; font-weight: 900;
+      font-size: clamp(1.5rem, 4vw, 2rem); text-transform: uppercase;
+      letter-spacing: 0.04em; color: var(--white); margin-bottom: 6px;
+    }
+    h1 span { color: var(--lime); }
+    .sub { color: var(--muted); font-size: 0.85rem; letter-spacing: 0.03em; }
+
+    .card {
+      background: var(--charcoal); border: 1px solid var(--border);
+      padding: 28px 32px; width: 100%; max-width: 640px; margin-bottom: 16px;
+    }
+    .section-label {
+      font-family: 'Montserrat', sans-serif; font-size: 0.6rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.18em; color: var(--lime); margin-bottom: 16px;
+    }
+
+    /* Status badge */
+    .status-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 8px 16px; margin-bottom: 24px; font-family: 'Montserrat', sans-serif;
+      font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.14em;
+    }
+    .status-badge.signed {
+      background: rgba(74,222,128,0.1); border: 1px solid rgba(74,222,128,0.4); color: var(--success);
+    }
+    .status-badge.pending {
+      background: rgba(250,204,21,0.08); border: 1px solid rgba(250,204,21,0.3); color: var(--pending);
+    }
+    .status-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+    }
+    .signed .status-dot { background: var(--success); }
+    .pending .status-dot { background: var(--pending); animation: pulse 1.5s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+    /* Summary grid */
+    .summary-grid { display: grid; gap: 0; margin-bottom: 4px; }
+    .summary-row {
+      display: flex; justify-content: space-between; align-items: baseline;
+      gap: 12px; padding: 11px 0; border-bottom: 1px solid var(--border);
+    }
+    .summary-row:last-child { border-bottom: none; }
+    .s-key { font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); white-space: nowrap; }
+    .s-val { font-size: 0.9rem; color: var(--white); text-align: right; }
+    .s-val.lime { color: var(--lime); }
+    .s-val.green { color: var(--success); }
+
+    /* Buttons */
+    .btn-primary {
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      width: 100%; padding: 15px 20px; background: var(--lime); color: var(--black);
+      font-family: 'Montserrat', sans-serif; font-size: 0.8rem; font-weight: 900;
+      text-transform: uppercase; letter-spacing: 0.15em;
+      border: none; cursor: pointer; border-radius: 0; transition: opacity 0.15s;
+      text-decoration: none; margin-top: 4px;
+    }
+    .btn-primary:hover { opacity: 0.88; }
+    .btn-secondary {
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      width: 100%; padding: 13px 20px; background: transparent; color: var(--white);
+      font-family: 'Montserrat', sans-serif; font-size: 0.8rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.12em;
+      border: 1px solid var(--border); cursor: pointer; border-radius: 0;
+      transition: border-color 0.15s; text-decoration: none; margin-top: 10px;
+    }
+    .btn-secondary:hover { border-color: var(--white); }
+
+    /* Waiting state */
+    .waiting-box {
+      text-align: center; padding: 28px 20px;
+    }
+    .waiting-box .w-icon { font-size: 2rem; margin-bottom: 14px; display: block; }
+    .waiting-box h3 {
+      font-family: 'Montserrat', sans-serif; font-weight: 900; font-size: 1rem;
+      text-transform: uppercase; letter-spacing: 0.08em; color: var(--white); margin-bottom: 8px;
+    }
+    .waiting-box p { color: var(--muted); font-size: 0.82rem; line-height: 1.7; }
+
+    .sign-link-row { display: flex; gap: 0; margin-top: 20px; }
+    .sign-link-row input {
+      flex: 1; background: var(--charcoal2); border: 1px solid var(--border); border-right: none;
+      color: var(--muted); font-size: 0.75rem; padding: 10px 12px;
+      font-family: 'Inter', monospace; overflow: hidden; text-overflow: ellipsis;
+    }
+    .btn-copy {
+      background: var(--lime); color: var(--black); border: none; cursor: pointer;
+      font-family: 'Montserrat', sans-serif; font-size: 0.7rem; font-weight: 900;
+      text-transform: uppercase; letter-spacing: 0.1em; padding: 10px 16px;
+      white-space: nowrap; transition: opacity 0.15s;
+    }
+    .btn-copy:hover { opacity: 0.85; }
+    .btn-copy.copied { background: var(--success); }
+
+    .refresh-note {
+      font-size: 0.75rem; color: #444; text-align: center; margin-top: 14px; letter-spacing: 0.04em;
+    }
+    .refresh-note a { color: #666; text-decoration: underline; cursor: pointer; }
+    .refresh-note a:hover { color: var(--lime); }
+
+    footer { margin-top: 32px; color: #333; font-size: 0.7rem; text-align: center; letter-spacing: 0.08em; }
+    footer a { color: #555; text-decoration: none; }
+    footer a:hover { color: var(--lime); }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo-row">
+    <div class="logo-mark">MM</div>
+    <div class="logo-text">Mxster Mxnds Productions LTD</div>
+  </div>
+  <h1>Contract <span>Status</span></h1>
+  <p class="sub">{{ meta.contract_name }}</p>
+</header>
+
+<!-- Status card -->
+<div class="card">
+  <div class="section-label">Signing Status</div>
+
+  {% if meta.signed %}
+  <div class="status-badge signed">
+    <span class="status-dot"></span>
+    Signed &amp; Complete
+  </div>
+  {% else %}
+  <div class="status-badge pending">
+    <span class="status-dot"></span>
+    Awaiting Client Signature
+  </div>
+  {% endif %}
+
+  <div class="summary-grid">
+    <div class="summary-row">
+      <span class="s-key">Contract</span>
+      <span class="s-val">{{ meta.contract_name }}</span>
+    </div>
+    {% set client_name = meta.form_data.get('Full_Name') or meta.form_data.get('CLIENT_NAME') or meta.form_data.get('CANDIDATE_NAME') or '—' %}
+    <div class="summary-row">
+      <span class="s-key">Client</span>
+      <span class="s-val">{{ client_name }}</span>
+    </div>
+    {% if meta.form_data.get('Artist_Name') %}
+    <div class="summary-row">
+      <span class="s-key">Artist / Stage Name</span>
+      <span class="s-val">{{ meta.form_data.Artist_Name }}</span>
+    </div>
+    {% endif %}
+    {% if meta.form_data.get('Price') %}
+    <div class="summary-row">
+      <span class="s-key">Total Investment</span>
+      <span class="s-val lime">${{ meta.form_data.Price }}</span>
+    </div>
+    {% endif %}
+    <div class="summary-row">
+      <span class="s-key">Generated</span>
+      <span class="s-val">{{ meta.created_at[:10] }}</span>
+    </div>
+    {% if meta.signed %}
+    <div class="summary-row">
+      <span class="s-key">Signed On</span>
+      <span class="s-val green">{{ meta.signed_at[:10] }}</span>
+    </div>
+    {% if meta.signed_by %}
+    {% for key, val in meta.signed_by.items() %}
+    <div class="summary-row">
+      <span class="s-key">Signed As</span>
+      <span class="s-val">{{ val }}</span>
+    </div>
+    {% endfor %}
+    {% endif %}
+    {% endif %}
+  </div>
+</div>
+
+<!-- Action card -->
+<div class="card">
+  {% if meta.signed %}
+    <div class="section-label">Downloads</div>
+    <a class="btn-primary" href="/download-signed/{{ token }}">
+      ⬇ Download Signed Contract
+    </a>
+    <a class="btn-secondary" href="/download/{{ token }}">
+      ⬇ Download Provider Copy (unsigned)
+    </a>
+  {% else %}
+    <div class="waiting-box">
+      <span class="w-icon">⏳</span>
+      <h3>Waiting for Client Signature</h3>
+      <p>
+        Share the link below with your client. Once they sign, you'll receive an email
+        with the signed contract attached, and this page will update automatically.
+      </p>
+      <div class="sign-link-row">
+        <input type="text" id="sign-link" value="{{ request.host_url.rstrip('/') }}/sign/{{ token }}" readonly/>
+        <button class="btn-copy" id="copy-btn" onclick="copyLink()">Copy</button>
+      </div>
+    </div>
+    <div class="refresh-note">
+      Page auto-checks every 15 seconds. Or <a onclick="location.reload()">refresh now</a>.
+    </div>
+    <a class="btn-secondary" href="/download/{{ token }}" style="margin-top:20px;">
+      ⬇ Download Provider Copy
+    </a>
+  {% endif %}
+</div>
+
+<a href="/" style="color:#444;font-size:0.75rem;text-decoration:none;letter-spacing:0.08em;
+   font-family:'Montserrat',sans-serif;font-weight:700;text-transform:uppercase;margin-top:8px;">
+  ← Generate Another Contract
+</a>
+
+<footer style="margin-top:28px;">
+  Mxster Mxnds Productions LTD · <a href="https://mxstermxndsprods.store">mxstermxndsprods.store</a>
+</footer>
+
+<script>
+  function copyLink() {
+    const input = document.getElementById('sign-link');
+    const btn = document.getElementById('copy-btn');
+    if (!input) return;
+    navigator.clipboard.writeText(input.value).then(() => {
+      btn.textContent = '✓ Copied';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+    }).catch(() => { input.select(); document.execCommand('copy'); });
+  }
+
+  {% if not meta.signed %}
+  // Auto-poll every 15s — reload page when signed
+  function checkStatus() {
+    fetch('/api/status/{{ token }}')
+      .then(r => r.json())
+      .then(d => { if (d.signed) location.reload(); })
+      .catch(() => {});
+  }
+  setInterval(checkStatus, 15000);
+  {% endif %}
+</script>
+</body>
+</html>
