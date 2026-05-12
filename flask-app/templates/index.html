@@ -132,6 +132,8 @@
 
     select { padding-right: 38px; cursor: pointer; }
     select option { background: var(--charcoal); }
+    select optgroup { background: var(--black); color: var(--lime); font-size: 0.7rem; letter-spacing: 0.12em; }
+    select optgroup option { color: var(--white); font-size: 0.9rem; letter-spacing: normal; }
 
     input[type="text"]:focus,
     input[type="date"]:focus,
@@ -416,9 +418,41 @@
       <div class="select-wrapper" style="margin-bottom:28px;">
         <select id="contract-select" onchange="loadFields(this.value)">
           <option value="">— Choose a contract —</option>
-          {% for contract in contracts %}
-          <option value="{{ contract.id }}">{{ contract.name }}</option>
-          {% endfor %}
+
+          <optgroup label="── MASTERING ─────────────────">
+            <option value="master_50">Pro Stereo Master ($50)</option>
+            <option value="ep_mastering_200">EP Mastering Bundle — 5 Songs ($200)</option>
+          </optgroup>
+
+          <optgroup label="── MIXING ────────────────────">
+            <option value="stdmix_60">Standard Mix — Essential ($60)</option>
+            <option value="hifi_150">High-Fidelity Studio Mix ($150)</option>
+            <option value="promix_250">Pro Studio Mix + Vocal Tuning ($250)</option>
+          </optgroup>
+
+          <optgroup label="── MIXING &amp; MASTERING ──────">
+            <option value="probundle_300">Pro Single Bundle + Pitch Correction ($300)</option>
+            <option value="radio_600">Radio-Ready Single — Mix &amp; Master ($600)</option>
+            <option value="deluxe_800">Deluxe EP Bundle — 4–9 Songs ($800)</option>
+            <option value="album_contract_1000">Full Album Standard — 12 Songs ($1,000)</option>
+          </optgroup>
+
+          <optgroup label="── BEATS &amp; CATALOG ACCESS ──">
+            <option value="vault_contract_1500">The Vault — Unlimited Annual Lease ($1,500)</option>
+          </optgroup>
+
+          <optgroup label="── HIGH TICKET PACKAGES ──────">
+            <option value="exec_2000">Executive Bundle ($2,000)</option>
+            <option value="elite_2500">Elite Album Experience ($2,500)</option>
+            <option value="launchpad_5000">The Artist Launchpad ($5,000)</option>
+            <option value="execpartner_7500">The Executive Partnership ($7,500)</option>
+            <option value="legacy_10000">The Legacy 360 — Career Partnership ($10,000)</option>
+          </optgroup>
+
+          <optgroup label="── OTHER ─────────────────────">
+            <option value="deposit_50">Service Deposit Agreement ($50)</option>
+            <option value="custom_artist_package">Custom Artist Package</option>
+          </optgroup>
         </select>
       </div>
 
