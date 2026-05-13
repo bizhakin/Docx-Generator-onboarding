@@ -13,6 +13,7 @@ from datetime import date, datetime
 from flask import Flask, render_template, request, jsonify, send_file, abort
 
 from docx import Document
+from portal_config import PORTAL_DATA
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 TEMPLATES_DIR = os.path.join(BASE_DIR, "contract_templates")
@@ -357,14 +358,90 @@ def sign_submit(token):
         daemon=True
     ).start()
 
-    # Stream the signed doc back to client
-    buf = io.BytesIO()
-    Document(signed_path).save(buf)
-    buf.seek(0)
-    contract_id = meta.get("contract_id", "contract")
-    return send_file(buf, as_attachment=True,
-                     download_name=f"{contract_id}_signed_{date.today().isoformat()}.docx",
-                     mimetype="application/vnd.openxmlformats-officedocument.wordprocessingml.document")
+    return jsonify({
+        "success": True,
+        "portal_url": f"/portal/{token}",
+        "download_url": f"/download-signed/{token}",
+    })
+
+
+@app.route("/portal/<token>")
+def client_portal(token):
+    token = re.sub(r"[^a-f0-9\-]", "", token)
+    meta_path = os.path.join(GENERATED_DIR, token, "meta.json")
+    if not os.path.exists(meta_path):
+        abort(404)
+    with open(meta_path) as f:
+        meta = json.load(f)
+
+    contract_id = meta.get("contract_id", "")
+    portal = dict(PORTAL_DATA.get(contract_id, {
+        "scope": "Custom service agreement — see your signed contract for full details.",
+        "turnaround": "To be communicated",
+        "deliverables": [],
+        "revisions": "Per signed agreement",
+        "credits": [],
+        "onboarding": [],
+    }))
+
+    # For custom_artist_package, build deliverables dynamically from form data
+    if contract_id == "custom_artist_package":
+        form_data = meta.get("form_data", {})
+        dynamic_deliverables = []
+        for i in range(1, 6):
+            service = (form_data.get(f"Service{i}") or "").strip()
+            if service:
+                qty_parts = []
+                qty = (form_data.get(f"Quantity{i}") or "").strip()
+                ta = (form_data.get(f"Turnaround{i}") or "").strip()
+                rev = (form_data.get(f"Revisions{i}") or "").strip()
+                if qty:
+                    qty_parts.append(f"Qty: {qty}")
+                if ta:
+                    qty_parts.append(ta)
+                if rev:
+                    qty_parts.append(f"{rev} revisions")
+                dynamic_deliverables.append({
+                    "label": service,
+                    "qty": " · ".join(qty_parts) if qty_parts else "See agreement",
+                })
+        portal["deliverables"] = dynamic_deliverables
+
+    form_data = meta.get("form_data", {})
+    client_name = (
+        form_data.get("Full_Name") or
+        form_data.get("CLIENT_NAME") or
+        form_data.get("Artist_Name") or
+        "Client"
+    )
+    artist_name = form_data.get("Artist_Name") or form_data.get("STAGE_Name") or ""
+    if artist_name == client_name:
+        artist_name = ""
+    start_date = form_data.get("START_Date") or form_data.get("Start_Date") or ""
+    end_date = form_data.get("END_Date") or form_data.get("End_Date") or ""
+    price = form_data.get("Price") or ""
+
+    signed_at = meta.get("signed_at", "")
+    signed_at_display = "—"
+    if signed_at:
+        try:
+            signed_dt = datetime.fromisoformat(signed_at)
+            signed_at_display = signed_dt.strftime("%B %d, %Y")
+        except Exception:
+            signed_at_display = signed_at[:10]
+
+    return render_template(
+        "portal.html",
+        token=token,
+        meta=meta,
+        portal=portal,
+        client_name=client_name,
+        artist_name=artist_name,
+        start_date=start_date,
+        end_date=end_date,
+        price=price,
+        signed_at_display=signed_at_display,
+    )
 
 
 @app.route("/api/status/<token>")

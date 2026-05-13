@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Client Portal — {{ meta.contract_name }}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black: #000000;
+      --charcoal: #1A1A1A;
+      --charcoal2: #242424;
+      --border: #2E2E2E;
+      --lime: #E6FB04;
+      --white: #FFFFFF;
+      --muted: #888888;
+      --green: #4ade80;
+      --green-dim: rgba(74,222,128,0.08);
+      --green-border: rgba(74,222,128,0.25);
+      --lime-dim: rgba(230,251,4,0.07);
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--black);
+      color: var(--white);
+      min-height: 100vh;
+      padding: 0 16px 80px;
+    }
+
+    /* ── Header ── */
+    header {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 36px 0 28px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .logo-row { display: flex; align-items: center; gap: 10px; }
+    .logo-mark {
+      width: 32px; height: 32px;
+      background: var(--lime);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Montserrat', sans-serif; font-weight: 900;
+      font-size: 14px; color: var(--black); flex-shrink: 0;
+    }
+    .logo-text {
+      font-family: 'Montserrat', sans-serif; font-weight: 700;
+      font-size: 0.6rem; letter-spacing: 0.2em;
+      text-transform: uppercase; color: var(--muted);
+    }
+    .portal-badge {
+      font-family: 'Montserrat', sans-serif; font-weight: 700;
+      font-size: 0.58rem; letter-spacing: 0.16em;
+      text-transform: uppercase;
+      background: var(--lime-dim);
+      border: 1px solid rgba(230,251,4,0.2);
+      color: var(--lime);
+      padding: 4px 10px;
+      white-space: nowrap;
+    }
+
+    /* ── Main wrapper ── */
+    .main { max-width: 760px; margin: 0 auto; }
+
+    /* ── Signed banner ── */
+    .signed-banner {
+      background: var(--green-dim);
+      border: 1px solid var(--green-border);
+      border-top: none;
+      padding: 14px 20px;
+      display: flex; align-items: center; gap: 12px;
+      margin-bottom: 28px;
+    }
+    .signed-check {
+      width: 28px; height: 28px; flex-shrink: 0;
+      background: var(--green);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.85rem; color: #000; font-weight: 900;
+    }
+    .signed-text { flex: 1; }
+    .signed-text strong {
+      display: block;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 900; font-size: 0.8rem;
+      text-transform: uppercase; letter-spacing: 0.1em;
+      color: var(--green); margin-bottom: 2px;
+    }
+    .signed-text span { font-size: 0.78rem; color: #6ee7a0; }
+
+    /* ── Identity card ── */
+    .identity-card {
+      background: var(--charcoal);
+      border: 1px solid var(--border);
+      padding: 24px 28px;
+      margin-bottom: 16px;
+      display: flex; align-items: flex-start; justify-content: space-between;
+      gap: 20px; flex-wrap: wrap;
+    }
+    .identity-left {}
+    .client-name {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 900; font-size: clamp(1.3rem, 4vw, 1.8rem);
+      text-transform: uppercase; letter-spacing: 0.04em;
+      color: var(--white); line-height: 1.1; margin-bottom: 4px;
+    }
+    .artist-tag {
+      font-size: 0.8rem; color: var(--lime); letter-spacing: 0.06em;
+      margin-bottom: 12px;
+    }
+    .identity-meta { display: flex; flex-wrap: wrap; gap: 8px; }
+    .meta-pill {
+      display: inline-flex; align-items: center; gap: 5px;
+      background: var(--charcoal2);
+      border: 1px solid var(--border);
+      padding: 4px 10px;
+      font-size: 0.72rem; color: var(--muted);
+      letter-spacing: 0.04em;
+    }
+    .meta-pill strong { color: var(--white); }
+
+    .identity-right { text-align: right; flex-shrink: 0; }
+    .contract-label {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.58rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.16em;
+      color: var(--lime); margin-bottom: 6px;
+    }
+    .contract-name-display {
+      font-size: 0.85rem; color: var(--white);
+      font-weight: 600; line-height: 1.4;
+      max-width: 220px;
+    }
+
+    /* ── Quick stats ── */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+    .stat-box {
+      background: var(--charcoal);
+      border: 1px solid var(--border);
+      padding: 16px 14px;
+      text-align: center;
+    }
+    .stat-label {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.55rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.14em;
+      color: var(--muted); margin-bottom: 6px;
+    }
+    .stat-value {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 900; font-size: 0.9rem;
+      color: var(--lime); line-height: 1.2;
+    }
+
+    /* ── Section cards ── */
+    .section-card {
+      background: var(--charcoal);
+      border: 1px solid var(--border);
+      padding: 24px 28px;
+      margin-bottom: 12px;
+    }
+
+    .section-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 18px;
+    }
+    .section-title {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.62rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.18em;
+      color: var(--lime);
+    }
+    .section-count {
+      font-size: 0.7rem; color: var(--muted);
+      background: var(--charcoal2);
+      border: 1px solid var(--border);
+      padding: 2px 8px;
+    }
+
+    /* ── Scope ── */
+    .scope-text {
+      font-size: 0.88rem; color: #ccc;
+      line-height: 1.75; letter-spacing: 0.01em;
+    }
+
+    /* ── Deliverables ── */
+    .deliverable-list { display: flex; flex-direction: column; gap: 0; }
+    .deliverable-row {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 16px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .deliverable-row:last-child { border-bottom: none; }
+    .del-dot {
+      width: 6px; height: 6px; flex-shrink: 0;
+      background: var(--lime); border-radius: 50%;
+    }
+    .del-label {
+      flex: 1;
+      font-size: 0.85rem; color: var(--white);
+      line-height: 1.4;
+    }
+    .del-qty {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.7rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.1em;
+      color: var(--lime);
+      background: var(--lime-dim);
+      border: 1px solid rgba(230,251,4,0.2);
+      padding: 3px 10px;
+      white-space: nowrap; flex-shrink: 0;
+    }
+
+    /* ── Credits / Sessions ── */
+    .credits-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 10px;
+    }
+    .credit-box {
+      background: var(--black);
+      border: 1px solid var(--border);
+      padding: 14px 16px;
+    }
+    .credit-label {
+      font-size: 0.68rem; color: var(--muted);
+      letter-spacing: 0.06em; margin-bottom: 6px;
+      text-transform: uppercase;
+    }
+    .credit-value {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 900; font-size: 1rem;
+      color: var(--white); line-height: 1.2;
+    }
+
+    /* ── Revisions info ── */
+    .revisions-bar {
+      background: var(--black);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--lime);
+      padding: 12px 16px;
+      font-size: 0.82rem; color: #ccc;
+      line-height: 1.5;
+    }
+    .revisions-bar strong { color: var(--lime); }
+
+    /* ── Onboarding steps ── */
+    .onboarding-list { display: flex; flex-direction: column; gap: 0; }
+    .onboard-step {
+      display: flex; gap: 16px; align-items: flex-start;
+      padding: 16px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .onboard-step:last-child { border-bottom: none; padding-bottom: 0; }
+    .step-num-box {
+      width: 28px; height: 28px; flex-shrink: 0;
+      background: var(--lime);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 900; font-size: 0.72rem;
+      color: var(--black);
+      margin-top: 1px;
+    }
+    .step-body {}
+    .step-title-text {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700; font-size: 0.82rem;
+      text-transform: uppercase; letter-spacing: 0.08em;
+      color: var(--white); margin-bottom: 5px;
+    }
+    .step-desc-text {
+      font-size: 0.8rem; color: var(--muted); line-height: 1.65;
+    }
+
+    /* ── Documents ── */
+    .doc-row {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 16px; flex-wrap: wrap;
+    }
+    .doc-info {}
+    .doc-name {
+      font-size: 0.88rem; color: var(--white);
+      font-weight: 600; margin-bottom: 3px;
+    }
+    .doc-meta { font-size: 0.72rem; color: var(--muted); }
+
+    /* ── Buttons ── */
+    .btn-primary {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      padding: 13px 24px;
+      background: var(--lime); color: var(--black);
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.75rem; font-weight: 900;
+      text-transform: uppercase; letter-spacing: 0.14em;
+      border: none; cursor: pointer; text-decoration: none;
+      transition: opacity 0.15s; white-space: nowrap;
+    }
+    .btn-primary:hover { opacity: 0.88; }
+
+    .btn-outline {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 10px 18px;
+      background: transparent; color: var(--muted);
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.7rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.12em;
+      border: 1px solid var(--border); cursor: pointer; text-decoration: none;
+      transition: border-color 0.15s, color 0.15s;
+    }
+    .btn-outline:hover { border-color: var(--white); color: var(--white); }
+
+    /* ── Contact footer ── */
+    .contact-strip {
+      max-width: 760px; margin: 28px auto 0;
+      background: var(--charcoal);
+      border: 1px solid var(--border);
+      padding: 18px 24px;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 10px;
+    }
+    .contact-strip-label {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.58rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.16em;
+      color: var(--lime); margin-bottom: 4px;
+    }
+    .contact-strip-items { display: flex; flex-wrap: wrap; gap: 16px; }
+    .contact-item { font-size: 0.78rem; color: var(--muted); }
+    .contact-item a { color: var(--muted); text-decoration: none; }
+    .contact-item a:hover { color: var(--lime); }
+
+    /* ── Divider ── */
+    .divider { height: 1px; background: var(--border); margin: 20px 0; }
+
+    @media (max-width: 520px) {
+      .identity-card { flex-direction: column; }
+      .identity-right { text-align: left; }
+      .stats-row { grid-template-columns: 1fr 1fr; }
+      .stats-row .stat-box:last-child { grid-column: 1 / -1; }
+      .section-card { padding: 20px 18px; }
+      .doc-row { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="logo-row">
+      <div class="logo-mark">MM</div>
+      <div class="logo-text">Mxster Mxnds Productions LTD</div>
+    </div>
+    <div class="portal-badge">✦ Client Portal</div>
+  </header>
+
+  <div class="main">
+
+    <!-- Signed confirmation banner -->
+    <div class="signed-banner">
+      <div class="signed-check">✓</div>
+      <div class="signed-text">
+        <strong>Agreement Signed &amp; Active</strong>
+        <span>Signed on {{ signed_at_display }} · Welcome to your client portal.</span>
+      </div>
+    </div>
+
+    <!-- Identity card -->
+    <div class="identity-card">
+      <div class="identity-left">
+        <div class="client-name">{{ client_name }}</div>
+        {% if artist_name %}
+        <div class="artist-tag">{{ artist_name }}</div>
+        {% endif %}
+        <div class="identity-meta">
+          {% if start_date %}
+          <div class="meta-pill">Start <strong>{{ start_date }}</strong></div>
+          {% endif %}
+          {% if end_date %}
+          <div class="meta-pill">End <strong>{{ end_date }}</strong></div>
+          {% endif %}
+          {% if price %}
+          <div class="meta-pill">Investment <strong>${{ price }}</strong></div>
+          {% endif %}
+          <div class="meta-pill">Signed <strong>{{ signed_at_display }}</strong></div>
+        </div>
+      </div>
+      <div class="identity-right">
+        <div class="contract-label">Active Agreement</div>
+        <div class="contract-name-display">{{ meta.contract_name }}</div>
+      </div>
+    </div>
+
+    <!-- Quick stats row -->
+    <div class="stats-row">
+      <div class="stat-box">
+        <div class="stat-label">Turnaround</div>
+        <div class="stat-value" style="font-size:0.72rem;">{{ portal.turnaround }}</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-label">Revisions</div>
+        <div class="stat-value" style="font-size:0.72rem;">{{ portal.revisions }}</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-label">Deliverables</div>
+        <div class="stat-value">{{ portal.deliverables | length }}</div>
+      </div>
+    </div>
+
+    <!-- Scope of Work -->
+    <div class="section-card">
+      <div class="section-header">
+        <div class="section-title">Scope of Work</div>
+      </div>
+      <p class="scope-text">{{ portal.scope }}</p>
+    </div>
+
+    <!-- Deliverables -->
+    <div class="section-card">
+      <div class="section-header">
+        <div class="section-title">Your Deliverables</div>
+        <div class="section-count">{{ portal.deliverables | length }} items</div>
+      </div>
+      {% if portal.deliverables %}
+      <div class="deliverable-list">
+        {% for d in portal.deliverables %}
+        <div class="deliverable-row">
+          <div class="del-dot"></div>
+          <div class="del-label">{{ d.label }}</div>
+          <div class="del-qty">{{ d.qty }}</div>
+        </div>
+        {% endfor %}
+      </div>
+      {% else %}
+      <p style="color:var(--muted);font-size:0.83rem;">See your signed agreement for full deliverable details.</p>
+      {% endif %}
+    </div>
+
+    <!-- Credits & Sessions (only for bundle contracts) -->
+    {% if portal.credits %}
+    <div class="section-card">
+      <div class="section-header">
+        <div class="section-title">Credits &amp; Sessions</div>
+      </div>
+      <div class="credits-grid">
+        {% for c in portal.credits %}
+        <div class="credit-box">
+          <div class="credit-label">{{ c.label }}</div>
+          <div class="credit-value">{{ c.value }}</div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+
+    <!-- Revision policy -->
+    <div class="section-card">
+      <div class="section-header">
+        <div class="section-title">Revision Policy</div>
+      </div>
+      <div class="revisions-bar">
+        <strong>{{ portal.revisions }}</strong>
+        <br/>All revision requests must be submitted in writing via email reply within 7 days of each delivery. Clearly list every note in a single email per round. Additional revisions beyond the included rounds may be subject to a fee, communicated in advance.
+      </div>
+    </div>
+
+    <!-- Getting Started / Onboarding -->
+    {% if portal.onboarding %}
+    <div class="section-card">
+      <div class="section-header">
+        <div class="section-title">Getting Started</div>
+        <div class="section-count">{{ portal.onboarding | length }} steps</div>
+      </div>
+      <div class="onboarding-list">
+        {% for step in portal.onboarding %}
+        <div class="onboard-step">
+          <div class="step-num-box">{{ loop.index }}</div>
+          <div class="step-body">
+            <div class="step-title-text">{{ step.title }}</div>
+            <div class="step-desc-text">{{ step.desc }}</div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+
+    <!-- Documents -->
+    <div class="section-card">
+      <div class="section-header">
+        <div class="section-title">Your Documents</div>
+      </div>
+      <div class="doc-row">
+        <div class="doc-info">
+          <div class="doc-name">Signed Service Agreement</div>
+          <div class="doc-meta">{{ meta.contract_name }} · Signed {{ signed_at_display }} · .docx</div>
+        </div>
+        <a href="/download-signed/{{ token }}" class="btn-primary">⬇ Download Signed Copy</a>
+      </div>
+    </div>
+
+  </div><!-- /main -->
+
+  <!-- Contact strip -->
+  <div class="contact-strip">
+    <div>
+      <div class="contact-strip-label">Need to reach us?</div>
+      <div style="font-size:0.72rem;color:var(--muted);">Your production team is here to support you.</div>
+    </div>
+    <div class="contact-strip-items">
+      <div class="contact-item"><a href="mailto:Mxstermxndsbeats@gmail.com">Mxstermxndsbeats@gmail.com</a></div>
+      <div class="contact-item"><a href="tel:+16016517869">+1 (601) 651-7869</a></div>
+      <div class="contact-item"><a href="https://mxstermxndsprods.store" target="_blank">mxstermxndsprods.store</a></div>
+    </div>
+  </div>
+
+</body>
+</html>

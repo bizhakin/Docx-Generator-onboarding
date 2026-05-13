@@ -345,27 +345,18 @@
       fetch(form.action, { method: 'POST', body: new FormData(form) })
         .then(res => {
           if (!res.ok) return res.text().then(t => { throw new Error(t); });
-          return res.blob();
+          return res.json();
         })
-        .then(blob => {
-          const url = URL.createObjectURL(blob);
-          const a = document.createElement('a');
-          a.href = url;
-          a.download = 'signed_contract.docx';
-          document.body.appendChild(a);
-          a.click();
-          a.remove();
-          URL.revokeObjectURL(url);
-          // Show success
-          form.querySelectorAll('.field-group, .ack-box').forEach(el => el.style.display = 'none');
-          btn.style.display = 'none';
-          document.getElementById('success-state').classList.add('visible');
+        .then(data => {
+          if (data.portal_url) {
+            window.location.href = data.portal_url;
+          }
         })
         .catch(err => {
           errorMsg.textContent = 'Error: ' + err.message;
           errorMsg.classList.add('visible');
-        })
-        .finally(() => btn.classList.remove('loading'));
+          btn.classList.remove('loading');
+        });
     }
   </script>
 </body>
