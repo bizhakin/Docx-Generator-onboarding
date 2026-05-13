@@ -5,12 +5,13 @@ import json
 import uuid
 import smtplib
 import threading
+from functools import wraps
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from email.mime.base import MIMEBase
 from email import encoders
 from datetime import date, datetime
-from flask import Flask, render_template, request, jsonify, send_file, abort
+from flask import Flask, render_template, request, jsonify, send_file, abort, session, redirect
 
 from docx import Document
 from portal_config import PORTAL_DATA
@@ -25,6 +26,20 @@ PROVIDER_EMAIL = "Mxstermxndsbeats@gmail.com"
 SMTP_USER = "Mxstermxndsbeats@gmail.com"
 
 app = Flask(__name__)
+app.secret_key = os.environ.get("SESSION_SECRET", "dev-fallback-key-change-in-prod")
+
+STAFF_PASSWORD = os.environ.get("STAFF_PIN", "StudioAccess2024")
+
+STATUS_INFO = {
+    "awaiting_files":      {"label": "Awaiting Files"},
+    "files_received":      {"label": "Files Received"},
+    "in_production":       {"label": "In Production"},
+    "draft_delivered":     {"label": "Draft Delivered"},
+    "revisions":           {"label": "Revisions In Progress"},
+    "revision_delivered":  {"label": "Revision Delivered"},
+    "final_delivered":     {"label": "Final Delivery Sent"},
+    "completed":           {"label": "Project Complete"},
+}
 
 
 # ── Helpers ──────────────────────────────────────────────────────────────────
@@ -32,6 +47,66 @@ app = Flask(__name__)
 def load_contracts():
     with open(CONTRACTS_CONFIG, "r") as f:
         return json.load(f)["contracts"]
+
+
+def load_project_data(token):
+    path = os.path.join(GENERATED_DIR, token, "project.json")
+    if os.path.exists(path):
+        with open(path) as f:
+            return json.load(f)
+    return {"status": "awaiting_files", "messages": []}
+
+
+def save_project_data(token, data):
+    path = os.path.join(GENERATED_DIR, token, "project.json")
+    with open(path, "w") as f:
+        json.dump(data, f)
+
+
+def staff_required(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        if not session.get("staff_logged_in"):
+            return redirect("/staff/login")
+        return f(*args, **kwargs)
+    return decorated
+
+
+def get_all_projects():
+    projects = []
+    if not os.path.exists(GENERATED_DIR):
+        return projects
+    for token in os.listdir(GENERATED_DIR):
+        meta_path = os.path.join(GENERATED_DIR, token, "meta.json")
+        if not os.path.exists(meta_path):
+            continue
+        with open(meta_path) as f:
+            meta = json.load(f)
+        project_data = load_project_data(token)
+        form_data = meta.get("form_data", {})
+        client_name = (
+            form_data.get("Full_Name") or form_data.get("CLIENT_NAME") or
+            form_data.get("Artist_Name") or "Unknown Client"
+        )
+        artist_name = form_data.get("Artist_Name") or form_data.get("STAGE_Name") or ""
+        messages = project_data.get("messages", [])
+        last_activity = (
+            messages[-1]["timestamp"] if messages else
+            meta.get("signed_at") or meta.get("created_at", "")
+        )
+        projects.append({
+            "token": token,
+            "meta": meta,
+            "client_name": client_name,
+            "artist_name": artist_name,
+            "status": project_data.get("status", "awaiting_files"),
+            "status_info": STATUS_INFO.get(project_data.get("status", "awaiting_files"), STATUS_INFO["awaiting_files"]),
+            "messages": messages,
+            "last_activity": last_activity,
+            "signed": meta.get("signed", False),
+        })
+    projects.sort(key=lambda x: x["last_activity"], reverse=True)
+    return projects
 
 
 def replace_in_paragraph(paragraph, replacements):
@@ -430,11 +505,14 @@ def client_portal(token):
         except Exception:
             signed_at_display = signed_at[:10]
 
+    project_data = load_project_data(token)
+
     return render_template(
         "portal.html",
         token=token,
         meta=meta,
         portal=portal,
+        project_data=project_data,
         client_name=client_name,
         artist_name=artist_name,
         start_date=start_date,
@@ -442,6 +520,152 @@ def client_portal(token):
         price=price,
         signed_at_display=signed_at_display,
     )
+
+
+@app.route("/portal/<token>/comment", methods=["POST"])
+def client_comment(token):
+    token = re.sub(r"[^a-f0-9\-]", "", token)
+    meta_path = os.path.join(GENERATED_DIR, token, "meta.json")
+    if not os.path.exists(meta_path):
+        abort(404)
+    with open(meta_path) as f:
+        meta = json.load(f)
+    text = request.form.get("text", "").strip()
+    if not text:
+        return redirect(f"/portal/{token}#messages")
+    form_data = meta.get("form_data", {})
+    client_name = (
+        form_data.get("Full_Name") or form_data.get("CLIENT_NAME") or
+        form_data.get("Artist_Name") or "Client"
+    )
+    project_data = load_project_data(token)
+    project_data["messages"].append({
+        "id": str(uuid.uuid4()),
+        "from": "client",
+        "author": client_name,
+        "text": text,
+        "timestamp": datetime.utcnow().isoformat(),
+        "type": "message",
+    })
+    save_project_data(token, project_data)
+    return redirect(f"/portal/{token}#messages")
+
+
+@app.route("/staff/login", methods=["GET", "POST"])
+def staff_login():
+    error = None
+    if request.method == "POST":
+        if request.form.get("password") == STAFF_PASSWORD:
+            session["staff_logged_in"] = True
+            return redirect("/staff")
+        error = "Incorrect password. Try again."
+    return render_template("staff_login.html", error=error)
+
+
+@app.route("/staff/logout")
+def staff_logout():
+    session.pop("staff_logged_in", None)
+    return redirect("/staff/login")
+
+
+@app.route("/staff")
+@staff_required
+def staff_dashboard():
+    projects = get_all_projects()
+    return render_template("staff.html", projects=projects, status_info=STATUS_INFO)
+
+
+@app.route("/staff/<token>")
+@staff_required
+def staff_project(token):
+    token = re.sub(r"[^a-f0-9\-]", "", token)
+    meta_path = os.path.join(GENERATED_DIR, token, "meta.json")
+    if not os.path.exists(meta_path):
+        abort(404)
+    with open(meta_path) as f:
+        meta = json.load(f)
+    project_data = load_project_data(token)
+    form_data = meta.get("form_data", {})
+    client_name = (
+        form_data.get("Full_Name") or form_data.get("CLIENT_NAME") or
+        form_data.get("Artist_Name") or "Client"
+    )
+    signed_at = meta.get("signed_at", "")
+    signed_at_display = "Not yet signed"
+    if signed_at:
+        try:
+            signed_dt = datetime.fromisoformat(signed_at)
+            signed_at_display = signed_dt.strftime("%B %d, %Y at %I:%M %p UTC")
+        except Exception:
+            signed_at_display = signed_at[:10]
+    return render_template(
+        "staff_project.html",
+        token=token,
+        meta=meta,
+        project_data=project_data,
+        client_name=client_name,
+        signed_at_display=signed_at_display,
+        status_info=STATUS_INFO,
+        current_status_info=STATUS_INFO.get(project_data.get("status", "awaiting_files"), STATUS_INFO["awaiting_files"]),
+    )
+
+
+@app.route("/staff/<token>/status", methods=["POST"])
+@staff_required
+def staff_update_status(token):
+    token = re.sub(r"[^a-f0-9\-]", "", token)
+    if not os.path.exists(os.path.join(GENERATED_DIR, token, "meta.json")):
+        abort(404)
+    new_status = request.form.get("status", "")
+    if new_status not in STATUS_INFO:
+        abort(400)
+    project_data = load_project_data(token)
+    project_data["status"] = new_status
+    project_data["messages"].append({
+        "id": str(uuid.uuid4()),
+        "from": "staff",
+        "author": "Studio",
+        "text": f"Status updated to: {STATUS_INFO[new_status]['label']}",
+        "timestamp": datetime.utcnow().isoformat(),
+        "type": "status_update",
+    })
+    save_project_data(token, project_data)
+    return redirect(f"/staff/{token}")
+
+
+@app.route("/staff/<token>/message", methods=["POST"])
+@staff_required
+def staff_post_message(token):
+    token = re.sub(r"[^a-f0-9\-]", "", token)
+    if not os.path.exists(os.path.join(GENERATED_DIR, token, "meta.json")):
+        abort(404)
+    text = request.form.get("text", "").strip()
+    if not text:
+        return redirect(f"/staff/{token}")
+    msg_type = request.form.get("msg_type", "message")
+    if msg_type not in ("message", "revision_request", "file_request",
+                        "draft_delivered", "revision_delivered", "final_delivery"):
+        msg_type = "message"
+    author = request.form.get("author", "Studio Team").strip() or "Studio Team"
+    project_data = load_project_data(token)
+    project_data["messages"].append({
+        "id": str(uuid.uuid4()),
+        "from": "staff",
+        "author": author,
+        "text": text,
+        "timestamp": datetime.utcnow().isoformat(),
+        "type": msg_type,
+    })
+    auto_status = {
+        "draft_delivered": "draft_delivered",
+        "revision_delivered": "revision_delivered",
+        "final_delivery": "final_delivered",
+        "revision_request": "revisions",
+    }
+    if msg_type in auto_status:
+        project_data["status"] = auto_status[msg_type]
+    save_project_data(token, project_data)
+    return redirect(f"/staff/{token}")
 
 
 @app.route("/api/status/<token>")

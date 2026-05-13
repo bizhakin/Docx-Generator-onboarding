@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Staff Access — Mxster Mxnds</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --black: #000; --charcoal: #1A1A1A; --charcoal2: #242424;
+      --border: #2E2E2E; --lime: #E6FB04; --white: #fff; --muted: #888; --danger: #FF4444;
+    }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--black); color: var(--white);
+      min-height: 100vh; display: flex; align-items: center; justify-content: center;
+      padding: 24px;
+    }
+    .box {
+      width: 100%; max-width: 400px;
+      background: var(--charcoal); border: 1px solid var(--border);
+      padding: 40px 36px;
+    }
+    .logo-row { display: flex; align-items: center; gap: 10px; margin-bottom: 32px; }
+    .logo-mark {
+      width: 32px; height: 32px; background: var(--lime);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Montserrat', sans-serif; font-weight: 900; font-size: 13px; color: var(--black);
+    }
+    .logo-text {
+      font-family: 'Montserrat', sans-serif; font-weight: 700;
+      font-size: 0.58rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted);
+    }
+    h1 {
+      font-family: 'Montserrat', sans-serif; font-weight: 900;
+      font-size: 1.3rem; text-transform: uppercase; letter-spacing: 0.06em;
+      margin-bottom: 6px;
+    }
+    .sub { font-size: 0.8rem; color: var(--muted); margin-bottom: 28px; }
+    label {
+      display: block; font-size: 0.68rem; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 0.12em; color: var(--muted); margin-bottom: 6px;
+    }
+    input[type="password"] {
+      width: 100%; background: var(--charcoal2); border: 1px solid var(--border);
+      color: var(--white); font-family: 'Inter', sans-serif; font-size: 0.95rem;
+      padding: 12px 14px; outline: none; border-radius: 0; margin-bottom: 16px;
+    }
+    input[type="password"]:focus { border-color: var(--lime); }
+    .error {
+      border-left: 3px solid var(--danger); background: rgba(255,68,68,0.08);
+      color: #ff8080; padding: 10px 14px; font-size: 0.8rem; margin-bottom: 16px;
+    }
+    button {
+      width: 100%; padding: 14px; background: var(--lime); color: var(--black);
+      font-family: 'Montserrat', sans-serif; font-weight: 900; font-size: 0.8rem;
+      text-transform: uppercase; letter-spacing: 0.14em; border: none; cursor: pointer;
+    }
+    button:hover { opacity: 0.88; }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <div class="logo-row">
+      <div class="logo-mark">MM</div>
+      <div class="logo-text">Mxster Mxnds Productions LTD</div>
+    </div>
+    <h1>Staff Access</h1>
+    <p class="sub">Production team only. Enter your studio password to continue.</p>
+    {% if error %}
+    <div class="error">{{ error }}</div>
+    {% endif %}
+    <form method="POST">
+      <label for="password">Studio Password</label>
+      <input type="password" id="password" name="password" placeholder="Enter password" autofocus required/>
+      <button type="submit">Enter Studio</button>
+    </form>
+  </div>
+</body>
+</html>

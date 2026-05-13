@@ -9,344 +9,181 @@
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     :root {
-      --black: #000000;
-      --charcoal: #1A1A1A;
-      --charcoal2: #242424;
-      --border: #2E2E2E;
-      --lime: #E6FB04;
-      --white: #FFFFFF;
-      --muted: #888888;
-      --green: #4ade80;
-      --green-dim: rgba(74,222,128,0.08);
-      --green-border: rgba(74,222,128,0.25);
-      --lime-dim: rgba(230,251,4,0.07);
+      --black: #000000; --charcoal: #1A1A1A; --charcoal2: #242424;
+      --border: #2E2E2E; --lime: #E6FB04; --white: #FFFFFF; --muted: #888888;
+      --green: #4ade80; --green-dim: rgba(74,222,128,0.08); --green-border: rgba(74,222,128,0.25);
+      --lime-dim: rgba(230,251,4,0.07); --purple: #c084fc; --orange: #fb923c; --blue: #38bdf8;
     }
+    body { font-family: 'Inter', sans-serif; background: var(--black); color: var(--white); min-height: 100vh; padding: 0 16px 80px; }
 
-    body {
-      font-family: 'Inter', sans-serif;
-      background: var(--black);
-      color: var(--white);
-      min-height: 100vh;
-      padding: 0 16px 80px;
-    }
-
-    /* ── Header ── */
+    /* Header */
     header {
-      max-width: 760px;
-      margin: 0 auto;
-      padding: 36px 0 28px;
+      max-width: 760px; margin: 0 auto; padding: 36px 0 28px;
       border-bottom: 1px solid var(--border);
-      margin-bottom: 0;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
+      display: flex; align-items: center; justify-content: space-between; gap: 16px;
     }
-
     .logo-row { display: flex; align-items: center; gap: 10px; }
-    .logo-mark {
-      width: 32px; height: 32px;
-      background: var(--lime);
-      display: flex; align-items: center; justify-content: center;
-      font-family: 'Montserrat', sans-serif; font-weight: 900;
-      font-size: 14px; color: var(--black); flex-shrink: 0;
-    }
-    .logo-text {
-      font-family: 'Montserrat', sans-serif; font-weight: 700;
-      font-size: 0.6rem; letter-spacing: 0.2em;
-      text-transform: uppercase; color: var(--muted);
-    }
-    .portal-badge {
-      font-family: 'Montserrat', sans-serif; font-weight: 700;
-      font-size: 0.58rem; letter-spacing: 0.16em;
-      text-transform: uppercase;
-      background: var(--lime-dim);
-      border: 1px solid rgba(230,251,4,0.2);
-      color: var(--lime);
-      padding: 4px 10px;
-      white-space: nowrap;
-    }
+    .logo-mark { width: 32px; height: 32px; background: var(--lime); display: flex; align-items: center; justify-content: center; font-family: 'Montserrat', sans-serif; font-weight: 900; font-size: 14px; color: var(--black); }
+    .logo-text { font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); }
+    .portal-badge { font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 0.58rem; letter-spacing: 0.16em; text-transform: uppercase; background: var(--lime-dim); border: 1px solid rgba(230,251,4,0.2); color: var(--lime); padding: 4px 10px; white-space: nowrap; }
 
-    /* ── Main wrapper ── */
     .main { max-width: 760px; margin: 0 auto; }
 
-    /* ── Signed banner ── */
-    .signed-banner {
-      background: var(--green-dim);
-      border: 1px solid var(--green-border);
-      border-top: none;
-      padding: 14px 20px;
-      display: flex; align-items: center; gap: 12px;
-      margin-bottom: 28px;
-    }
-    .signed-check {
-      width: 28px; height: 28px; flex-shrink: 0;
-      background: var(--green);
-      border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 0.85rem; color: #000; font-weight: 900;
-    }
-    .signed-text { flex: 1; }
-    .signed-text strong {
-      display: block;
-      font-family: 'Montserrat', sans-serif;
-      font-weight: 900; font-size: 0.8rem;
-      text-transform: uppercase; letter-spacing: 0.1em;
-      color: var(--green); margin-bottom: 2px;
-    }
+    /* Signed banner */
+    .signed-banner { background: var(--green-dim); border: 1px solid var(--green-border); border-top: none; padding: 14px 20px; display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+    .signed-check { width: 28px; height: 28px; flex-shrink: 0; background: var(--green); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; color: #000; font-weight: 900; }
+    .signed-text strong { display: block; font-family: 'Montserrat', sans-serif; font-weight: 900; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--green); margin-bottom: 2px; }
     .signed-text span { font-size: 0.78rem; color: #6ee7a0; }
 
-    /* ── Identity card ── */
-    .identity-card {
-      background: var(--charcoal);
-      border: 1px solid var(--border);
-      padding: 24px 28px;
-      margin-bottom: 16px;
-      display: flex; align-items: flex-start; justify-content: space-between;
-      gap: 20px; flex-wrap: wrap;
+    /* Status bar */
+    .status-bar {
+      padding: 12px 20px; display: flex; align-items: center; gap: 10px;
+      margin-bottom: 16px; border: 1px solid var(--border);
     }
-    .identity-left {}
-    .client-name {
-      font-family: 'Montserrat', sans-serif;
-      font-weight: 900; font-size: clamp(1.3rem, 4vw, 1.8rem);
-      text-transform: uppercase; letter-spacing: 0.04em;
-      color: var(--white); line-height: 1.1; margin-bottom: 4px;
-    }
-    .artist-tag {
-      font-size: 0.8rem; color: var(--lime); letter-spacing: 0.06em;
-      margin-bottom: 12px;
-    }
+    .status-dot-indicator { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+    .status-bar-label { font-family: 'Montserrat', sans-serif; font-weight: 900; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.12em; }
+    .status-bar-sub { font-size: 0.75rem; margin-left: auto; }
+
+    /* Status colors */
+    .bar-awaiting_files   { background: rgba(136,136,136,0.08); border-color: #333; }
+    .bar-awaiting_files   .status-bar-label { color: #888; }
+    .bar-awaiting_files   .status-dot-indicator { background: #555; }
+    .bar-awaiting_files   .status-bar-sub { color: #666; }
+
+    .bar-files_received   { background: rgba(230,251,4,0.06); border-color: rgba(230,251,4,0.2); }
+    .bar-files_received   .status-bar-label { color: #E6FB04; }
+    .bar-files_received   .status-dot-indicator { background: #E6FB04; }
+    .bar-files_received   .status-bar-sub { color: #aaa; }
+
+    .bar-in_production    { background: rgba(56,189,248,0.06); border-color: rgba(56,189,248,0.25); }
+    .bar-in_production    .status-bar-label { color: #38bdf8; }
+    .bar-in_production    .status-dot-indicator { background: #38bdf8; }
+    .bar-in_production    .status-bar-sub { color: #aaa; }
+
+    .bar-draft_delivered  { background: rgba(251,146,60,0.06); border-color: rgba(251,146,60,0.25); }
+    .bar-draft_delivered  .status-bar-label { color: #fb923c; }
+    .bar-draft_delivered  .status-dot-indicator { background: #fb923c; }
+    .bar-draft_delivered  .status-bar-sub { color: #aaa; }
+
+    .bar-revisions        { background: rgba(192,132,252,0.06); border-color: rgba(192,132,252,0.25); }
+    .bar-revisions        .status-bar-label { color: #c084fc; }
+    .bar-revisions        .status-dot-indicator { background: #c084fc; }
+    .bar-revisions        .status-bar-sub { color: #aaa; }
+
+    .bar-revision_delivered { background: rgba(251,146,60,0.06); border-color: rgba(251,146,60,0.25); }
+    .bar-revision_delivered .status-bar-label { color: #fb923c; }
+    .bar-revision_delivered .status-dot-indicator { background: #fb923c; }
+    .bar-revision_delivered .status-bar-sub { color: #aaa; }
+
+    .bar-final_delivered  { background: rgba(74,222,128,0.08); border-color: rgba(74,222,128,0.3); }
+    .bar-final_delivered  .status-bar-label { color: #4ade80; }
+    .bar-final_delivered  .status-dot-indicator { background: #4ade80; }
+    .bar-final_delivered  .status-bar-sub { color: #6ee7a0; }
+
+    .bar-completed        { background: rgba(74,222,128,0.1); border-color: rgba(74,222,128,0.4); }
+    .bar-completed        .status-bar-label { color: #4ade80; }
+    .bar-completed        .status-dot-indicator { background: #4ade80; }
+    .bar-completed        .status-bar-sub { color: #6ee7a0; }
+
+    /* Identity card */
+    .identity-card { background: var(--charcoal); border: 1px solid var(--border); padding: 24px 28px; margin-bottom: 10px; display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
+    .client-name { font-family: 'Montserrat', sans-serif; font-weight: 900; font-size: clamp(1.3rem, 4vw, 1.8rem); text-transform: uppercase; letter-spacing: 0.04em; color: var(--white); line-height: 1.1; margin-bottom: 4px; }
+    .artist-tag { font-size: 0.8rem; color: var(--lime); letter-spacing: 0.06em; margin-bottom: 12px; }
     .identity-meta { display: flex; flex-wrap: wrap; gap: 8px; }
-    .meta-pill {
-      display: inline-flex; align-items: center; gap: 5px;
-      background: var(--charcoal2);
-      border: 1px solid var(--border);
-      padding: 4px 10px;
-      font-size: 0.72rem; color: var(--muted);
-      letter-spacing: 0.04em;
-    }
+    .meta-pill { display: inline-flex; align-items: center; gap: 5px; background: var(--charcoal2); border: 1px solid var(--border); padding: 4px 10px; font-size: 0.72rem; color: var(--muted); }
     .meta-pill strong { color: var(--white); }
-
     .identity-right { text-align: right; flex-shrink: 0; }
-    .contract-label {
-      font-family: 'Montserrat', sans-serif;
-      font-size: 0.58rem; font-weight: 700;
-      text-transform: uppercase; letter-spacing: 0.16em;
-      color: var(--lime); margin-bottom: 6px;
-    }
-    .contract-name-display {
-      font-size: 0.85rem; color: var(--white);
-      font-weight: 600; line-height: 1.4;
-      max-width: 220px;
-    }
+    .contract-label { font-family: 'Montserrat', sans-serif; font-size: 0.58rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.16em; color: var(--lime); margin-bottom: 6px; }
+    .contract-name-display { font-size: 0.85rem; color: var(--white); font-weight: 600; line-height: 1.4; max-width: 220px; }
 
-    /* ── Quick stats ── */
-    .stats-row {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 8px;
-      margin-bottom: 16px;
-    }
-    .stat-box {
-      background: var(--charcoal);
-      border: 1px solid var(--border);
-      padding: 16px 14px;
-      text-align: center;
-    }
-    .stat-label {
-      font-family: 'Montserrat', sans-serif;
-      font-size: 0.55rem; font-weight: 700;
-      text-transform: uppercase; letter-spacing: 0.14em;
-      color: var(--muted); margin-bottom: 6px;
-    }
-    .stat-value {
-      font-family: 'Montserrat', sans-serif;
-      font-weight: 900; font-size: 0.9rem;
-      color: var(--lime); line-height: 1.2;
-    }
+    /* Quick stats */
+    .stats-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 10px; }
+    .stat-box { background: var(--charcoal); border: 1px solid var(--border); padding: 16px 14px; text-align: center; }
+    .stat-label { font-family: 'Montserrat', sans-serif; font-size: 0.55rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.14em; color: var(--muted); margin-bottom: 6px; }
+    .stat-value { font-family: 'Montserrat', sans-serif; font-weight: 900; font-size: 0.9rem; color: var(--lime); line-height: 1.2; }
 
-    /* ── Section cards ── */
-    .section-card {
-      background: var(--charcoal);
-      border: 1px solid var(--border);
-      padding: 24px 28px;
-      margin-bottom: 12px;
-    }
+    /* Section cards */
+    .section-card { background: var(--charcoal); border: 1px solid var(--border); padding: 24px 28px; margin-bottom: 10px; }
+    .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; }
+    .section-title { font-family: 'Montserrat', sans-serif; font-size: 0.62rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.18em; color: var(--lime); }
+    .section-count { font-size: 0.7rem; color: var(--muted); background: var(--charcoal2); border: 1px solid var(--border); padding: 2px 8px; }
 
-    .section-header {
-      display: flex; align-items: center; justify-content: space-between;
-      margin-bottom: 18px;
-    }
-    .section-title {
-      font-family: 'Montserrat', sans-serif;
-      font-size: 0.62rem; font-weight: 700;
-      text-transform: uppercase; letter-spacing: 0.18em;
-      color: var(--lime);
-    }
-    .section-count {
-      font-size: 0.7rem; color: var(--muted);
-      background: var(--charcoal2);
-      border: 1px solid var(--border);
-      padding: 2px 8px;
-    }
+    .scope-text { font-size: 0.88rem; color: #ccc; line-height: 1.75; }
 
-    /* ── Scope ── */
-    .scope-text {
-      font-size: 0.88rem; color: #ccc;
-      line-height: 1.75; letter-spacing: 0.01em;
-    }
-
-    /* ── Deliverables ── */
-    .deliverable-list { display: flex; flex-direction: column; gap: 0; }
-    .deliverable-row {
-      display: flex; align-items: center; justify-content: space-between;
-      gap: 16px;
-      padding: 12px 0;
-      border-bottom: 1px solid var(--border);
-    }
+    .deliverable-list { display: flex; flex-direction: column; }
+    .deliverable-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 12px 0; border-bottom: 1px solid var(--border); }
     .deliverable-row:last-child { border-bottom: none; }
-    .del-dot {
-      width: 6px; height: 6px; flex-shrink: 0;
-      background: var(--lime); border-radius: 50%;
-    }
-    .del-label {
-      flex: 1;
-      font-size: 0.85rem; color: var(--white);
-      line-height: 1.4;
-    }
-    .del-qty {
-      font-family: 'Montserrat', sans-serif;
-      font-size: 0.7rem; font-weight: 700;
-      text-transform: uppercase; letter-spacing: 0.1em;
-      color: var(--lime);
-      background: var(--lime-dim);
-      border: 1px solid rgba(230,251,4,0.2);
-      padding: 3px 10px;
-      white-space: nowrap; flex-shrink: 0;
-    }
+    .del-dot { width: 6px; height: 6px; flex-shrink: 0; background: var(--lime); border-radius: 50%; }
+    .del-label { flex: 1; font-size: 0.85rem; color: var(--white); line-height: 1.4; }
+    .del-qty { font-family: 'Montserrat', sans-serif; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--lime); background: var(--lime-dim); border: 1px solid rgba(230,251,4,0.2); padding: 3px 10px; white-space: nowrap; flex-shrink: 0; }
 
-    /* ── Credits / Sessions ── */
-    .credits-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-      gap: 10px;
-    }
-    .credit-box {
-      background: var(--black);
-      border: 1px solid var(--border);
-      padding: 14px 16px;
-    }
-    .credit-label {
-      font-size: 0.68rem; color: var(--muted);
-      letter-spacing: 0.06em; margin-bottom: 6px;
-      text-transform: uppercase;
-    }
-    .credit-value {
-      font-family: 'Montserrat', sans-serif;
-      font-weight: 900; font-size: 1rem;
-      color: var(--white); line-height: 1.2;
-    }
+    .credits-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(175px, 1fr)); gap: 10px; }
+    .credit-box { background: var(--black); border: 1px solid var(--border); padding: 14px 16px; }
+    .credit-label { font-size: 0.68rem; color: var(--muted); letter-spacing: 0.06em; margin-bottom: 6px; text-transform: uppercase; }
+    .credit-value { font-family: 'Montserrat', sans-serif; font-weight: 900; font-size: 1rem; color: var(--white); line-height: 1.2; }
 
-    /* ── Revisions info ── */
-    .revisions-bar {
-      background: var(--black);
-      border: 1px solid var(--border);
-      border-left: 3px solid var(--lime);
-      padding: 12px 16px;
-      font-size: 0.82rem; color: #ccc;
-      line-height: 1.5;
-    }
+    .revisions-bar { background: var(--black); border: 1px solid var(--border); border-left: 3px solid var(--lime); padding: 12px 16px; font-size: 0.82rem; color: #ccc; line-height: 1.5; }
     .revisions-bar strong { color: var(--lime); }
 
-    /* ── Onboarding steps ── */
-    .onboarding-list { display: flex; flex-direction: column; gap: 0; }
-    .onboard-step {
-      display: flex; gap: 16px; align-items: flex-start;
-      padding: 16px 0;
-      border-bottom: 1px solid var(--border);
-    }
+    .onboarding-list { display: flex; flex-direction: column; }
+    .onboard-step { display: flex; gap: 16px; align-items: flex-start; padding: 16px 0; border-bottom: 1px solid var(--border); }
     .onboard-step:last-child { border-bottom: none; padding-bottom: 0; }
-    .step-num-box {
-      width: 28px; height: 28px; flex-shrink: 0;
-      background: var(--lime);
-      display: flex; align-items: center; justify-content: center;
-      font-family: 'Montserrat', sans-serif;
-      font-weight: 900; font-size: 0.72rem;
-      color: var(--black);
-      margin-top: 1px;
-    }
-    .step-body {}
-    .step-title-text {
-      font-family: 'Montserrat', sans-serif;
-      font-weight: 700; font-size: 0.82rem;
-      text-transform: uppercase; letter-spacing: 0.08em;
-      color: var(--white); margin-bottom: 5px;
-    }
-    .step-desc-text {
-      font-size: 0.8rem; color: var(--muted); line-height: 1.65;
-    }
+    .step-num-box { width: 28px; height: 28px; flex-shrink: 0; background: var(--lime); display: flex; align-items: center; justify-content: center; font-family: 'Montserrat', sans-serif; font-weight: 900; font-size: 0.72rem; color: var(--black); margin-top: 1px; }
+    .step-title-text { font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 0.82rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--white); margin-bottom: 5px; }
+    .step-desc-text { font-size: 0.8rem; color: var(--muted); line-height: 1.65; }
 
-    /* ── Documents ── */
-    .doc-row {
-      display: flex; align-items: center; justify-content: space-between;
-      gap: 16px; flex-wrap: wrap;
+    /* Message thread */
+    .msg-bubble { padding: 14px 16px; margin-bottom: 10px; border: 1px solid var(--border); }
+    .msg-bubble.from-staff { background: var(--charcoal2); border-left: 3px solid var(--lime); }
+    .msg-bubble.from-client { background: var(--black); border-left: 3px solid var(--purple); }
+    .msg-bubble.type-status_update { background: rgba(0,0,0,0.3); border-left: 3px solid #333; opacity: 0.7; }
+
+    .msg-meta-row { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; flex-wrap: wrap; }
+    .msg-author-name { font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.1em; }
+    .msg-author-name.staff { color: var(--lime); }
+    .msg-author-name.client { color: var(--purple); }
+    .msg-author-name.status { color: var(--muted); }
+    .msg-time-str { font-size: 0.65rem; color: var(--muted); }
+    .msg-type-tag {
+      font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 0.55rem;
+      text-transform: uppercase; letter-spacing: 0.1em; padding: 2px 8px;
     }
-    .doc-info {}
-    .doc-name {
-      font-size: 0.88rem; color: var(--white);
-      font-weight: 600; margin-bottom: 3px;
-    }
+    .tag-revision_request { background: rgba(251,146,60,0.15); color: #fb923c; border: 1px solid rgba(251,146,60,0.3); }
+    .tag-file_request     { background: rgba(230,251,4,0.1);   color: #E6FB04; border: 1px solid rgba(230,251,4,0.25); }
+    .tag-draft_delivered  { background: rgba(56,189,248,0.1);  color: #38bdf8; border: 1px solid rgba(56,189,248,0.3); }
+    .tag-revision_delivered { background: rgba(56,189,248,0.1); color: #38bdf8; border: 1px solid rgba(56,189,248,0.3); }
+    .tag-final_delivery   { background: rgba(74,222,128,0.1);  color: #4ade80; border: 1px solid rgba(74,222,128,0.3); }
+    .tag-status_update    { background: rgba(136,136,136,0.1); color: #666; border: 1px solid #333; }
+
+    .msg-body { font-size: 0.85rem; color: var(--white); line-height: 1.65; white-space: pre-wrap; }
+    .type-status_update .msg-body { color: var(--muted); font-size: 0.78rem; }
+
+    .no-msgs-yet { text-align: center; padding: 28px; color: var(--muted); font-size: 0.82rem; border: 1px dashed var(--border); margin-bottom: 20px; }
+
+    /* Client reply form */
+    .reply-form { margin-top: 16px; }
+    .reply-label { font-size: 0.68rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); margin-bottom: 6px; display: block; }
+    textarea { width: 100%; background: var(--charcoal2); border: 1px solid var(--border); color: var(--white); font-family: 'Inter', sans-serif; font-size: 0.88rem; padding: 12px 14px; outline: none; resize: vertical; min-height: 88px; margin-bottom: 10px; }
+    textarea:focus { border-color: var(--lime); }
+    textarea::placeholder { color: #555; }
+    .btn-reply { width: 100%; padding: 13px; background: var(--lime); color: var(--black); font-family: 'Montserrat', sans-serif; font-weight: 900; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.14em; border: none; cursor: pointer; transition: opacity 0.15s; }
+    .btn-reply:hover { opacity: 0.88; }
+
+    /* Documents */
+    .doc-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+    .doc-name { font-size: 0.88rem; color: var(--white); font-weight: 600; margin-bottom: 3px; }
     .doc-meta { font-size: 0.72rem; color: var(--muted); }
-
-    /* ── Buttons ── */
-    .btn-primary {
-      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-      padding: 13px 24px;
-      background: var(--lime); color: var(--black);
-      font-family: 'Montserrat', sans-serif;
-      font-size: 0.75rem; font-weight: 900;
-      text-transform: uppercase; letter-spacing: 0.14em;
-      border: none; cursor: pointer; text-decoration: none;
-      transition: opacity 0.15s; white-space: nowrap;
-    }
+    .btn-primary { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 13px 24px; background: var(--lime); color: var(--black); font-family: 'Montserrat', sans-serif; font-size: 0.75rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.14em; border: none; cursor: pointer; text-decoration: none; transition: opacity 0.15s; white-space: nowrap; }
     .btn-primary:hover { opacity: 0.88; }
 
-    .btn-outline {
-      display: inline-flex; align-items: center; gap: 8px;
-      padding: 10px 18px;
-      background: transparent; color: var(--muted);
-      font-family: 'Montserrat', sans-serif;
-      font-size: 0.7rem; font-weight: 700;
-      text-transform: uppercase; letter-spacing: 0.12em;
-      border: 1px solid var(--border); cursor: pointer; text-decoration: none;
-      transition: border-color 0.15s, color 0.15s;
-    }
-    .btn-outline:hover { border-color: var(--white); color: var(--white); }
-
-    /* ── Contact footer ── */
-    .contact-strip {
-      max-width: 760px; margin: 28px auto 0;
-      background: var(--charcoal);
-      border: 1px solid var(--border);
-      padding: 18px 24px;
-      display: flex; align-items: center; justify-content: space-between;
-      flex-wrap: wrap; gap: 10px;
-    }
-    .contact-strip-label {
-      font-family: 'Montserrat', sans-serif;
-      font-size: 0.58rem; font-weight: 700;
-      text-transform: uppercase; letter-spacing: 0.16em;
-      color: var(--lime); margin-bottom: 4px;
-    }
+    /* Contact strip */
+    .contact-strip { max-width: 760px; margin: 20px auto 0; background: var(--charcoal); border: 1px solid var(--border); padding: 18px 24px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
+    .contact-strip-label { font-family: 'Montserrat', sans-serif; font-size: 0.58rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.16em; color: var(--lime); margin-bottom: 4px; }
     .contact-strip-items { display: flex; flex-wrap: wrap; gap: 16px; }
     .contact-item { font-size: 0.78rem; color: var(--muted); }
     .contact-item a { color: var(--muted); text-decoration: none; }
     .contact-item a:hover { color: var(--lime); }
-
-    /* ── Divider ── */
-    .divider { height: 1px; background: var(--border); margin: 20px 0; }
 
     @media (max-width: 520px) {
       .identity-card { flex-direction: column; }
@@ -379,23 +216,45 @@
       </div>
     </div>
 
+    <!-- Production status bar -->
+    {% set status_labels = {
+      'awaiting_files': 'Awaiting File Submission',
+      'files_received': 'Files Received — In Queue',
+      'in_production': 'In Production',
+      'draft_delivered': 'Draft Delivered — Awaiting Feedback',
+      'revisions': 'Revisions In Progress',
+      'revision_delivered': 'Revision Delivered — Awaiting Approval',
+      'final_delivered': 'Final Delivery Sent',
+      'completed': 'Project Complete',
+    } %}
+    {% set status_subs = {
+      'awaiting_files': 'Please submit your files to begin production.',
+      'files_received': 'Your files have been received. We are in queue.',
+      'in_production': 'Your project is actively being worked on.',
+      'draft_delivered': 'Your first draft is ready — check your messages.',
+      'revisions': 'Working through your revision notes now.',
+      'revision_delivered': 'Your updated revision is ready — check messages.',
+      'final_delivered': 'Your final files have been sent — check your messages.',
+      'completed': 'Your project has been completed and delivered.',
+    } %}
+    {% set current_status = project_data.status %}
+    <div class="status-bar bar-{{ current_status }}">
+      <div class="status-dot-indicator"></div>
+      <div class="status-bar-label">{{ status_labels.get(current_status, current_status) }}</div>
+      <div class="status-bar-sub">{{ status_subs.get(current_status, '') }}</div>
+    </div>
+
     <!-- Identity card -->
     <div class="identity-card">
-      <div class="identity-left">
+      <div>
         <div class="client-name">{{ client_name }}</div>
         {% if artist_name %}
         <div class="artist-tag">{{ artist_name }}</div>
         {% endif %}
         <div class="identity-meta">
-          {% if start_date %}
-          <div class="meta-pill">Start <strong>{{ start_date }}</strong></div>
-          {% endif %}
-          {% if end_date %}
-          <div class="meta-pill">End <strong>{{ end_date }}</strong></div>
-          {% endif %}
-          {% if price %}
-          <div class="meta-pill">Investment <strong>${{ price }}</strong></div>
-          {% endif %}
+          {% if start_date %}<div class="meta-pill">Start <strong>{{ start_date }}</strong></div>{% endif %}
+          {% if end_date %}<div class="meta-pill">End <strong>{{ end_date }}</strong></div>{% endif %}
+          {% if price %}<div class="meta-pill">Investment <strong>${{ price }}</strong></div>{% endif %}
           <div class="meta-pill">Signed <strong>{{ signed_at_display }}</strong></div>
         </div>
       </div>
@@ -423,9 +282,7 @@
 
     <!-- Scope of Work -->
     <div class="section-card">
-      <div class="section-header">
-        <div class="section-title">Scope of Work</div>
-      </div>
+      <div class="section-header"><div class="section-title">Scope of Work</div></div>
       <p class="scope-text">{{ portal.scope }}</p>
     </div>
 
@@ -450,12 +307,10 @@
       {% endif %}
     </div>
 
-    <!-- Credits & Sessions (only for bundle contracts) -->
+    <!-- Credits (bundle contracts) -->
     {% if portal.credits %}
     <div class="section-card">
-      <div class="section-header">
-        <div class="section-title">Credits &amp; Sessions</div>
-      </div>
+      <div class="section-header"><div class="section-title">Credits &amp; Sessions</div></div>
       <div class="credits-grid">
         {% for c in portal.credits %}
         <div class="credit-box">
@@ -467,18 +322,16 @@
     </div>
     {% endif %}
 
-    <!-- Revision policy -->
+    <!-- Revision Policy -->
     <div class="section-card">
-      <div class="section-header">
-        <div class="section-title">Revision Policy</div>
-      </div>
+      <div class="section-header"><div class="section-title">Revision Policy</div></div>
       <div class="revisions-bar">
-        <strong>{{ portal.revisions }}</strong>
-        <br/>All revision requests must be submitted in writing via email reply within 7 days of each delivery. Clearly list every note in a single email per round. Additional revisions beyond the included rounds may be subject to a fee, communicated in advance.
+        <strong>{{ portal.revisions }}</strong><br/>
+        All revision requests must be submitted in writing within 7 days of each delivery. Clearly list every note in a single message per round. Additional revisions beyond included rounds may be subject to a fee.
       </div>
     </div>
 
-    <!-- Getting Started / Onboarding -->
+    <!-- Onboarding -->
     {% if portal.onboarding %}
     <div class="section-card">
       <div class="section-header">
@@ -489,7 +342,7 @@
         {% for step in portal.onboarding %}
         <div class="onboard-step">
           <div class="step-num-box">{{ loop.index }}</div>
-          <div class="step-body">
+          <div>
             <div class="step-title-text">{{ step.title }}</div>
             <div class="step-desc-text">{{ step.desc }}</div>
           </div>
@@ -499,13 +352,58 @@
     </div>
     {% endif %}
 
+    <!-- Studio Messages + Client Reply -->
+    <div class="section-card" id="messages">
+      <div class="section-header">
+        <div class="section-title">Studio Updates</div>
+        {% if project_data.messages %}
+        <div class="section-count">{{ project_data.messages | length }} message{{ 's' if project_data.messages | length != 1 }}</div>
+        {% endif %}
+      </div>
+
+      {% set type_labels = {
+        'revision_request': 'Revision Request',
+        'file_request': 'Files Needed',
+        'draft_delivered': 'Draft Delivered',
+        'revision_delivered': 'Revision Delivered',
+        'final_delivery': 'Final Delivery',
+        'status_update': 'Status Update',
+      } %}
+
+      {% if project_data.messages %}
+        {% for msg in project_data.messages %}
+        <div class="msg-bubble from-{{ msg.from }} type-{{ msg.type }}">
+          <div class="msg-meta-row">
+            <span class="msg-author-name {{ 'staff' if msg.from == 'staff' else ('status' if msg.type == 'status_update' else 'client') }}">
+              {{ msg.author }}
+            </span>
+            {% if type_labels.get(msg.type) %}
+            <span class="msg-type-tag tag-{{ msg.type }}">{{ type_labels[msg.type] }}</span>
+            {% endif %}
+            <span class="msg-time-str">{{ msg.timestamp[:16].replace('T', ' ') }} UTC</span>
+          </div>
+          <div class="msg-body">{{ msg.text }}</div>
+        </div>
+        {% endfor %}
+      {% else %}
+      <div class="no-msgs-yet">No updates from the studio yet. Check back here for drafts, revision notes, and delivery updates.</div>
+      {% endif %}
+
+      <!-- Client reply -->
+      <div class="reply-form">
+        <label class="reply-label">Reply to Studio Team</label>
+        <form method="POST" action="/portal/{{ token }}/comment">
+          <textarea name="text" placeholder="Leave a note, revision comment, or question for the studio team…"></textarea>
+          <button type="submit" class="btn-reply">Send Reply →</button>
+        </form>
+      </div>
+    </div>
+
     <!-- Documents -->
     <div class="section-card">
-      <div class="section-header">
-        <div class="section-title">Your Documents</div>
-      </div>
+      <div class="section-header"><div class="section-title">Your Documents</div></div>
       <div class="doc-row">
-        <div class="doc-info">
+        <div>
           <div class="doc-name">Signed Service Agreement</div>
           <div class="doc-meta">{{ meta.contract_name }} · Signed {{ signed_at_display }} · .docx</div>
         </div>
@@ -513,7 +411,7 @@
       </div>
     </div>
 
-  </div><!-- /main -->
+  </div>
 
   <!-- Contact strip -->
   <div class="contact-strip">

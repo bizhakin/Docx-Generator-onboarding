@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Studio Dashboard — Mxster Mxnds</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --black: #000; --charcoal: #1A1A1A; --charcoal2: #242424;
+      --border: #2E2E2E; --lime: #E6FB04; --white: #fff; --muted: #888;
+      --green: #4ade80; --orange: #fb923c; --blue: #38bdf8; --purple: #c084fc;
+    }
+    body { font-family: 'Inter', sans-serif; background: var(--black); color: var(--white); min-height: 100vh; padding: 0 16px 80px; }
+
+    header {
+      max-width: 900px; margin: 0 auto;
+      padding: 32px 0 24px;
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+    }
+    .header-left { display: flex; align-items: center; gap: 14px; }
+    .logo-mark {
+      width: 32px; height: 32px; background: var(--lime);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Montserrat', sans-serif; font-weight: 900; font-size: 13px; color: var(--black);
+    }
+    .header-titles {}
+    .header-sup {
+      font-family: 'Montserrat', sans-serif; font-size: 0.58rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.18em; color: var(--muted); margin-bottom: 2px;
+    }
+    .header-title {
+      font-family: 'Montserrat', sans-serif; font-weight: 900;
+      font-size: 1.1rem; text-transform: uppercase; letter-spacing: 0.06em;
+    }
+    .header-right { display: flex; gap: 10px; align-items: center; }
+    .badge-staff {
+      font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 0.58rem;
+      text-transform: uppercase; letter-spacing: 0.14em;
+      background: rgba(230,251,4,0.08); border: 1px solid rgba(230,251,4,0.2);
+      color: var(--lime); padding: 4px 10px;
+    }
+    .btn-logout {
+      font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 0.65rem;
+      text-transform: uppercase; letter-spacing: 0.12em;
+      background: transparent; color: var(--muted); border: 1px solid var(--border);
+      padding: 6px 14px; cursor: pointer; text-decoration: none;
+      transition: color 0.15s, border-color 0.15s;
+    }
+    .btn-logout:hover { color: var(--white); border-color: var(--white); }
+
+    .main { max-width: 900px; margin: 0 auto; padding-top: 28px; }
+
+    /* Stats row */
+    .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 24px; }
+    .stat-box { background: var(--charcoal); border: 1px solid var(--border); padding: 16px 14px; text-align: center; }
+    .stat-label { font-family: 'Montserrat', sans-serif; font-size: 0.55rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.14em; color: var(--muted); margin-bottom: 6px; }
+    .stat-num { font-family: 'Montserrat', sans-serif; font-weight: 900; font-size: 1.6rem; color: var(--lime); }
+
+    /* Filter tabs */
+    .filter-row { display: flex; gap: 6px; margin-bottom: 16px; flex-wrap: wrap; }
+    .filter-btn {
+      font-family: 'Montserrat', sans-serif; font-size: 0.62rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.1em;
+      background: var(--charcoal2); border: 1px solid var(--border);
+      color: var(--muted); padding: 6px 14px; cursor: pointer;
+      transition: all 0.15s; user-select: none;
+    }
+    .filter-btn.active, .filter-btn:hover { background: var(--lime); color: var(--black); border-color: var(--lime); }
+
+    /* Section label */
+    .section-label {
+      font-family: 'Montserrat', sans-serif; font-size: 0.6rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.16em; color: var(--lime); margin-bottom: 10px;
+    }
+
+    /* Project cards */
+    .projects-list { display: flex; flex-direction: column; gap: 6px; }
+    .project-card {
+      background: var(--charcoal); border: 1px solid var(--border);
+      padding: 18px 20px;
+      display: flex; align-items: center; gap: 16px;
+      text-decoration: none; color: inherit;
+      transition: border-color 0.15s;
+      cursor: pointer;
+    }
+    .project-card:hover { border-color: var(--lime); }
+    .project-card.unsigned { opacity: 0.5; }
+
+    .pc-status-dot {
+      width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
+    }
+    .pc-main { flex: 1; min-width: 0; }
+    .pc-name {
+      font-family: 'Montserrat', sans-serif; font-weight: 900;
+      font-size: 0.88rem; text-transform: uppercase; letter-spacing: 0.04em;
+      color: var(--white); margin-bottom: 3px;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .pc-contract { font-size: 0.75rem; color: var(--muted); }
+    .pc-right { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; flex-shrink: 0; }
+    .pc-badge {
+      font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 0.58rem;
+      text-transform: uppercase; letter-spacing: 0.1em;
+      padding: 3px 9px; white-space: nowrap;
+    }
+    .pc-time { font-size: 0.68rem; color: var(--muted); }
+    .pc-msgs {
+      font-size: 0.68rem; color: var(--muted);
+      background: var(--charcoal2); border: 1px solid var(--border);
+      padding: 2px 8px;
+    }
+
+    /* Status colors */
+    .s-awaiting_files   { background: rgba(136,136,136,0.12); color: #888;       border: 1px solid #444; }
+    .s-files_received   { background: rgba(230,251,4,0.1);    color: #E6FB04;    border: 1px solid rgba(230,251,4,0.3); }
+    .s-in_production    { background: rgba(56,189,248,0.1);   color: #38bdf8;    border: 1px solid rgba(56,189,248,0.3); }
+    .s-draft_delivered  { background: rgba(251,146,60,0.1);   color: #fb923c;    border: 1px solid rgba(251,146,60,0.3); }
+    .s-revisions        { background: rgba(192,132,252,0.1);  color: #c084fc;    border: 1px solid rgba(192,132,252,0.3); }
+    .s-revision_delivered { background: rgba(251,146,60,0.1); color: #fb923c;    border: 1px solid rgba(251,146,60,0.3); }
+    .s-final_delivered  { background: rgba(74,222,128,0.1);   color: #4ade80;    border: 1px solid rgba(74,222,128,0.3); }
+    .s-completed        { background: rgba(74,222,128,0.15);  color: #4ade80;    border: 1px solid rgba(74,222,128,0.5); }
+    .s-unsigned         { background: rgba(136,136,136,0.08); color: #666;       border: 1px solid #333; }
+
+    .dot-awaiting_files   { background: #555; }
+    .dot-files_received   { background: #E6FB04; }
+    .dot-in_production    { background: #38bdf8; }
+    .dot-draft_delivered  { background: #fb923c; }
+    .dot-revisions        { background: #c084fc; }
+    .dot-revision_delivered { background: #fb923c; }
+    .dot-final_delivered  { background: #4ade80; }
+    .dot-completed        { background: #4ade80; }
+    .dot-unsigned         { background: #444; }
+
+    .empty-state { text-align: center; padding: 60px 20px; color: var(--muted); font-size: 0.85rem; }
+
+    @media (max-width: 540px) {
+      .stats-row { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-left">
+    <div class="logo-mark">MM</div>
+    <div class="header-titles">
+      <div class="header-sup">Mxster Mxnds Productions</div>
+      <div class="header-title">Studio Dashboard</div>
+    </div>
+  </div>
+  <div class="header-right">
+    <div class="badge-staff">✦ Staff View</div>
+    <a href="/staff/logout" class="btn-logout">Log Out</a>
+  </div>
+</header>
+
+<div class="main">
+
+  <!-- Stats -->
+  <div class="stats-row">
+    <div class="stat-box">
+      <div class="stat-label">Total Projects</div>
+      <div class="stat-num">{{ projects | length }}</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-label">Active</div>
+      <div class="stat-num">{{ projects | selectattr('signed') | list | length }}</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-label">In Production</div>
+      <div class="stat-num">{{ projects | selectattr('status', 'equalto', 'in_production') | list | length }}</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-label">Completed</div>
+      <div class="stat-num">{{ projects | selectattr('status', 'equalto', 'completed') | list | length }}</div>
+    </div>
+  </div>
+
+  <!-- Filter tabs -->
+  <div class="filter-row" id="filters">
+    <div class="filter-btn active" onclick="filterProjects('all', this)">All</div>
+    <div class="filter-btn" onclick="filterProjects('signed', this)">Signed</div>
+    <div class="filter-btn" onclick="filterProjects('in_production', this)">In Production</div>
+    <div class="filter-btn" onclick="filterProjects('awaiting_files', this)">Awaiting Files</div>
+    <div class="filter-btn" onclick="filterProjects('draft_delivered', this)">Draft Out</div>
+    <div class="filter-btn" onclick="filterProjects('revisions', this)">Revisions</div>
+    <div class="filter-btn" onclick="filterProjects('completed', this)">Completed</div>
+  </div>
+
+  <div class="section-label">All Projects</div>
+
+  {% if projects %}
+  <div class="projects-list" id="projects-list">
+    {% for p in projects %}
+    {% set status_key = p.status if p.signed else 'unsigned' %}
+    <a href="/staff/{{ p.token }}"
+       class="project-card {% if not p.signed %}unsigned{% endif %}"
+       data-status="{{ p.status }}"
+       data-signed="{{ 'true' if p.signed else 'false' }}">
+      <div class="pc-status-dot dot-{{ status_key }}"></div>
+      <div class="pc-main">
+        <div class="pc-name">{{ p.client_name }}{% if p.artist_name %} · {{ p.artist_name }}{% endif %}</div>
+        <div class="pc-contract">{{ p.meta.contract_name }}</div>
+      </div>
+      <div class="pc-right">
+        <div class="pc-badge s-{{ status_key }}">
+          {% if not p.signed %}Unsigned{% else %}{{ p.status_info.label }}{% endif %}
+        </div>
+        {% if p.messages %}
+        <div class="pc-msgs">{{ p.messages | length }} msg{{ 's' if p.messages | length != 1 }}</div>
+        {% endif %}
+        <div class="pc-time">
+          {% if p.last_activity %}{{ p.last_activity[:10] }}{% endif %}
+        </div>
+      </div>
+    </a>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="empty-state">No contracts generated yet.</div>
+  {% endif %}
+
+</div>
+
+<script>
+  function filterProjects(filter, btn) {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.project-card').forEach(card => {
+      const status = card.dataset.status;
+      const signed = card.dataset.signed === 'true';
+      let show = false;
+      if (filter === 'all') show = true;
+      else if (filter === 'signed') show = signed;
+      else show = signed && status === filter;
+      card.style.display = show ? 'flex' : 'none';
+    });
+  }
+</script>
+
+</body>
+</html>

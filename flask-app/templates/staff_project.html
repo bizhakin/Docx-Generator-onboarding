@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>{{ client_name }} — Studio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --black: #000; --charcoal: #1A1A1A; --charcoal2: #242424;
+      --border: #2E2E2E; --lime: #E6FB04; --white: #fff; --muted: #888; --danger: #FF4444;
+      --green: #4ade80; --orange: #fb923c; --blue: #38bdf8; --purple: #c084fc;
+    }
+    body { font-family: 'Inter', sans-serif; background: var(--black); color: var(--white); min-height: 100vh; padding: 0 16px 80px; }
+
+    /* Header */
+    header {
+      max-width: 900px; margin: 0 auto;
+      padding: 28px 0 20px;
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    }
+    .back-link {
+      font-family: 'Montserrat', sans-serif; font-size: 0.62rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.12em; color: var(--muted);
+      text-decoration: none; display: flex; align-items: center; gap: 6px;
+      transition: color 0.15s;
+    }
+    .back-link:hover { color: var(--lime); }
+    .header-right { display: flex; gap: 10px; align-items: center; }
+    .badge-staff {
+      font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 0.58rem;
+      text-transform: uppercase; letter-spacing: 0.14em;
+      background: rgba(230,251,4,0.08); border: 1px solid rgba(230,251,4,0.2);
+      color: var(--lime); padding: 4px 10px;
+    }
+
+    .main { max-width: 900px; margin: 0 auto; padding-top: 24px; }
+
+    /* Project header card */
+    .project-header {
+      background: var(--charcoal); border: 1px solid var(--border);
+      padding: 22px 24px; margin-bottom: 12px;
+      display: flex; align-items: flex-start; justify-content: space-between;
+      gap: 20px; flex-wrap: wrap;
+    }
+    .ph-name {
+      font-family: 'Montserrat', sans-serif; font-weight: 900;
+      font-size: clamp(1.2rem, 3vw, 1.6rem);
+      text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 4px;
+    }
+    .ph-contract { font-size: 0.8rem; color: var(--muted); margin-bottom: 10px; }
+    .ph-meta { display: flex; flex-wrap: wrap; gap: 8px; }
+    .ph-pill {
+      font-size: 0.7rem; color: var(--muted);
+      background: var(--charcoal2); border: 1px solid var(--border);
+      padding: 3px 10px;
+    }
+    .ph-pill strong { color: var(--white); }
+    .ph-right { flex-shrink: 0; }
+    .portal-link {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-family: 'Montserrat', sans-serif; font-size: 0.65rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.1em;
+      color: var(--lime); text-decoration: none;
+      border: 1px solid rgba(230,251,4,0.3); padding: 8px 14px;
+      transition: background 0.15s;
+    }
+    .portal-link:hover { background: rgba(230,251,4,0.08); }
+
+    /* Two-column layout */
+    .layout { display: grid; grid-template-columns: 1fr 340px; gap: 12px; align-items: start; }
+
+    /* Section card */
+    .card { background: var(--charcoal); border: 1px solid var(--border); padding: 20px 22px; margin-bottom: 12px; }
+    .card-title {
+      font-family: 'Montserrat', sans-serif; font-size: 0.6rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.16em; color: var(--lime); margin-bottom: 16px;
+    }
+
+    /* Status update */
+    select {
+      width: 100%; background: var(--charcoal2); border: 1px solid var(--border);
+      color: var(--white); font-family: 'Inter', sans-serif; font-size: 0.88rem;
+      padding: 11px 14px; outline: none; cursor: pointer; margin-bottom: 10px;
+    }
+    select:focus { border-color: var(--lime); }
+    select option { background: var(--charcoal2); }
+    .btn-save {
+      width: 100%; padding: 12px; background: var(--charcoal2); color: var(--white);
+      border: 1px solid var(--border); font-family: 'Montserrat', sans-serif;
+      font-weight: 700; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.12em;
+      cursor: pointer; transition: all 0.15s;
+    }
+    .btn-save:hover { background: var(--lime); color: var(--black); border-color: var(--lime); }
+
+    /* Current status badge */
+    .status-current {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 0.62rem;
+      text-transform: uppercase; letter-spacing: 0.1em;
+      padding: 5px 12px; margin-bottom: 14px;
+    }
+    .status-dot { width: 7px; height: 7px; border-radius: 50%; }
+
+    /* Status colors */
+    .s-awaiting_files   { background: rgba(136,136,136,0.12); color: #888;    border: 1px solid #444; }
+    .s-files_received   { background: rgba(230,251,4,0.1);    color: #E6FB04; border: 1px solid rgba(230,251,4,0.3); }
+    .s-in_production    { background: rgba(56,189,248,0.1);   color: #38bdf8; border: 1px solid rgba(56,189,248,0.3); }
+    .s-draft_delivered  { background: rgba(251,146,60,0.1);   color: #fb923c; border: 1px solid rgba(251,146,60,0.3); }
+    .s-revisions        { background: rgba(192,132,252,0.1);  color: #c084fc; border: 1px solid rgba(192,132,252,0.3); }
+    .s-revision_delivered { background: rgba(251,146,60,0.1); color: #fb923c; border: 1px solid rgba(251,146,60,0.3); }
+    .s-final_delivered  { background: rgba(74,222,128,0.1);   color: #4ade80; border: 1px solid rgba(74,222,128,0.3); }
+    .s-completed        { background: rgba(74,222,128,0.15);  color: #4ade80; border: 1px solid rgba(74,222,128,0.5); }
+
+    .dot-awaiting_files   { background: #555; }
+    .dot-files_received   { background: #E6FB04; }
+    .dot-in_production    { background: #38bdf8; }
+    .dot-draft_delivered  { background: #fb923c; }
+    .dot-revisions        { background: #c084fc; }
+    .dot-revision_delivered { background: #fb923c; }
+    .dot-final_delivered  { background: #4ade80; }
+    .dot-completed        { background: #4ade80; }
+
+    /* Message thread */
+    .message-thread { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; max-height: 520px; overflow-y: auto; }
+    .msg-bubble {
+      padding: 14px 16px;
+      border: 1px solid var(--border);
+    }
+    .msg-bubble.from-staff {
+      background: var(--charcoal2);
+      border-left: 3px solid var(--lime);
+    }
+    .msg-bubble.from-client {
+      background: var(--black);
+      border-left: 3px solid var(--purple);
+    }
+    .msg-bubble.type-status_update {
+      background: rgba(0,0,0,0.4);
+      border-left: 3px solid #444;
+      opacity: 0.75;
+    }
+    .msg-meta {
+      display: flex; align-items: center; gap: 8px; margin-bottom: 6px; flex-wrap: wrap;
+    }
+    .msg-author {
+      font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 0.68rem;
+      text-transform: uppercase; letter-spacing: 0.1em;
+    }
+    .msg-author.staff { color: var(--lime); }
+    .msg-author.client { color: var(--purple); }
+    .msg-author.status-update-author { color: var(--muted); }
+    .msg-time { font-size: 0.65rem; color: var(--muted); }
+    .msg-type-badge {
+      font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 0.55rem;
+      text-transform: uppercase; letter-spacing: 0.1em;
+      padding: 2px 8px;
+    }
+    .type-revision_request .msg-type-badge { background: rgba(251,146,60,0.15); color: #fb923c; border: 1px solid rgba(251,146,60,0.3); }
+    .type-file_request     .msg-type-badge { background: rgba(230,251,4,0.1);   color: #E6FB04; border: 1px solid rgba(230,251,4,0.25); }
+    .type-draft_delivered  .msg-type-badge { background: rgba(56,189,248,0.1);  color: #38bdf8; border: 1px solid rgba(56,189,248,0.3); }
+    .type-revision_delivered .msg-type-badge { background: rgba(56,189,248,0.1); color: #38bdf8; border: 1px solid rgba(56,189,248,0.3); }
+    .type-final_delivery   .msg-type-badge { background: rgba(74,222,128,0.1); color: #4ade80; border: 1px solid rgba(74,222,128,0.3); }
+    .type-status_update    .msg-type-badge { background: rgba(136,136,136,0.1); color: #666; border: 1px solid #333; }
+    .msg-text { font-size: 0.85rem; color: var(--white); line-height: 1.65; white-space: pre-wrap; }
+    .type-status_update .msg-text { color: var(--muted); font-size: 0.78rem; }
+
+    .no-messages { text-align: center; padding: 32px; color: var(--muted); font-size: 0.82rem; border: 1px dashed var(--border); }
+
+    /* Post message form */
+    .msg-type-select { margin-bottom: 10px; }
+    textarea {
+      width: 100%; background: var(--charcoal2); border: 1px solid var(--border);
+      color: var(--white); font-family: 'Inter', sans-serif; font-size: 0.88rem;
+      padding: 12px 14px; outline: none; resize: vertical; min-height: 100px;
+      margin-bottom: 10px;
+    }
+    textarea:focus { border-color: var(--lime); }
+    textarea::placeholder { color: #555; }
+    .author-input {
+      width: 100%; background: var(--charcoal2); border: 1px solid var(--border);
+      color: var(--white); font-family: 'Inter', sans-serif; font-size: 0.88rem;
+      padding: 10px 14px; outline: none; margin-bottom: 10px;
+    }
+    .author-input:focus { border-color: var(--lime); }
+    .btn-send {
+      width: 100%; padding: 13px; background: var(--lime); color: var(--black);
+      font-family: 'Montserrat', sans-serif; font-weight: 900; font-size: 0.75rem;
+      text-transform: uppercase; letter-spacing: 0.14em; border: none; cursor: pointer;
+      transition: opacity 0.15s;
+    }
+    .btn-send:hover { opacity: 0.88; }
+
+    .form-label {
+      font-size: 0.65rem; font-weight: 600; text-transform: uppercase;
+      letter-spacing: 0.1em; color: var(--muted); margin-bottom: 6px; display: block;
+    }
+
+    .type-hint {
+      font-size: 0.72rem; color: var(--muted); line-height: 1.5; margin-bottom: 10px;
+      padding: 8px 12px; background: var(--black); border: 1px solid var(--border);
+    }
+    .type-hint strong { color: var(--white); }
+
+    @media (max-width: 680px) {
+      .layout { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <a href="/staff" class="back-link">← Dashboard</a>
+  <div class="header-right">
+    <div class="badge-staff">✦ Studio</div>
+    <a href="/staff/logout" style="font-size:0.62rem;color:var(--muted);text-decoration:none;border:1px solid var(--border);padding:5px 10px;font-family:Montserrat,sans-serif;text-transform:uppercase;letter-spacing:0.1em;font-weight:700;" onmouseover="this.style.color='white'" onmouseout="this.style.color='var(--muted)'">Log Out</a>
+  </div>
+</header>
+
+<div class="main">
+
+  <!-- Project header -->
+  <div class="project-header">
+    <div>
+      <div class="ph-name">{{ client_name }}</div>
+      <div class="ph-contract">{{ meta.contract_name }}</div>
+      <div class="ph-meta">
+        <div class="ph-pill">Signed: <strong>{% if meta.signed %}Yes — {{ signed_at_display }}{% else %}Not yet{% endif %}</strong></div>
+        {% if meta.form_data.get('Artist_Name') %}
+        <div class="ph-pill">Artist: <strong>{{ meta.form_data.Artist_Name }}</strong></div>
+        {% endif %}
+        {% if meta.form_data.get('Price') %}
+        <div class="ph-pill">Investment: <strong>${{ meta.form_data.Price }}</strong></div>
+        {% endif %}
+        <div class="ph-pill">Token: <strong style="font-size:0.65rem;letter-spacing:0;">{{ token[:8] }}…</strong></div>
+      </div>
+    </div>
+    <div class="ph-right">
+      {% if meta.signed %}
+      <a href="/portal/{{ token }}" target="_blank" class="portal-link">↗ Client Portal</a>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="layout">
+
+    <!-- LEFT: Messages -->
+    <div>
+      <div class="card">
+        <div class="card-title">Client Communication Thread</div>
+
+        {% if project_data.messages %}
+        <div class="message-thread" id="thread">
+          {% for msg in project_data.messages %}
+          {% set type_labels = {
+            'message': '',
+            'status_update': 'Status Update',
+            'revision_request': 'Revision Request',
+            'file_request': 'Files Needed',
+            'draft_delivered': 'Draft Delivered',
+            'revision_delivered': 'Revision Delivered',
+            'final_delivery': 'Final Delivery'
+          } %}
+          <div class="msg-bubble from-{{ msg.from }} type-{{ msg.type }}">
+            <div class="msg-meta">
+              <span class="msg-author {{ 'staff' if msg.from == 'staff' else ('status-update-author' if msg.type == 'status_update' else 'client') }}">
+                {{ msg.author }}
+              </span>
+              {% if type_labels.get(msg.type) %}
+              <span class="msg-type-badge">{{ type_labels[msg.type] }}</span>
+              {% endif %}
+              <span class="msg-time">{{ msg.timestamp[:16].replace('T', ' ') }} UTC</span>
+            </div>
+            <div class="msg-text">{{ msg.text }}</div>
+          </div>
+          {% endfor %}
+        </div>
+        {% else %}
+        <div class="no-messages">No messages yet. Send the first update below.</div>
+        {% endif %}
+
+        <!-- Post message form -->
+        <form method="POST" action="/staff/{{ token }}/message">
+          <label class="form-label">Your Name</label>
+          <input class="author-input" type="text" name="author" placeholder="e.g. Mix Engineer, Studio Team" value="Studio Team"/>
+
+          <label class="form-label">Message Type</label>
+          <select name="msg_type" class="msg-type-select" id="typeSelect" onchange="updateHint(this.value)">
+            <option value="message">General Message</option>
+            <option value="file_request">Files Needed</option>
+            <option value="revision_request">Revision Request</option>
+            <option value="draft_delivered">Draft Delivered</option>
+            <option value="revision_delivered">Revision Delivered</option>
+            <option value="final_delivery">Final Delivery</option>
+          </select>
+          <div class="type-hint" id="typeHint">A general update or note to the client. Status remains unchanged.</div>
+
+          <label class="form-label">Message</label>
+          <textarea name="text" placeholder="Write your message to the client…"></textarea>
+
+          <button type="submit" class="btn-send">Send to Client →</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- RIGHT: Status + Info -->
+    <div>
+
+      <!-- Status -->
+      <div class="card">
+        <div class="card-title">Project Status</div>
+        <div class="status-current s-{{ project_data.status }}">
+          <div class="status-dot dot-{{ project_data.status }}"></div>
+          {{ current_status_info.label }}
+        </div>
+        <form method="POST" action="/staff/{{ token }}/status">
+          <select name="status">
+            {% for key, info in status_info.items() %}
+            <option value="{{ key }}" {% if project_data.status == key %}selected{% endif %}>{{ info.label }}</option>
+            {% endfor %}
+          </select>
+          <button type="submit" class="btn-save">Update Status</button>
+        </form>
+      </div>
+
+      <!-- Quick Info -->
+      <div class="card">
+        <div class="card-title">Quick Reference</div>
+        <div style="display:flex;flex-direction:column;gap:0;">
+          {% set rows = [
+            ('Contract', meta.contract_name),
+            ('Contract ID', meta.contract_id),
+            ('Email', meta.form_data.get('Email', '—')),
+            ('Phone', meta.form_data.get('Phone', '—')),
+            ('Start Date', meta.form_data.get('START_Date') or meta.form_data.get('Start_Date') or '—'),
+            ('End Date', meta.form_data.get('END_Date') or meta.form_data.get('End_Date') or '—'),
+          ] %}
+          {% for label, val in rows %}
+          <div style="padding:10px 0;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;gap:10px;">
+            <span style="font-size:0.68rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em;font-weight:600;">{{ label }}</span>
+            <span style="font-size:0.8rem;color:var(--white);text-align:right;word-break:break-all;">{{ val }}</span>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- Thread stats -->
+      {% if project_data.messages %}
+      <div class="card">
+        <div class="card-title">Thread Summary</div>
+        {% set staff_msgs = project_data.messages | selectattr('from', 'equalto', 'staff') | list %}
+        {% set client_msgs = project_data.messages | selectattr('from', 'equalto', 'client') | list %}
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+          <div style="background:var(--black);border:1px solid var(--border);padding:12px;text-align:center;">
+            <div style="font-size:0.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:4px;">Studio Msgs</div>
+            <div style="font-family:Montserrat,sans-serif;font-weight:900;font-size:1.2rem;color:var(--lime);">{{ staff_msgs | length }}</div>
+          </div>
+          <div style="background:var(--black);border:1px solid var(--border);padding:12px;text-align:center;">
+            <div style="font-size:0.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:4px;">Client Replies</div>
+            <div style="font-family:Montserrat,sans-serif;font-weight:900;font-size:1.2rem;color:var(--purple);">{{ client_msgs | length }}</div>
+          </div>
+        </div>
+      </div>
+      {% endif %}
+
+    </div>
+  </div>
+
+</div>
+
+<script>
+  const hints = {
+    message: "A general update or note to the client. Status remains unchanged.",
+    file_request: "Notifies the client that additional files or information are needed from them.",
+    revision_request: "Tells the client revisions are underway. Status auto-updates to 'Revisions In Progress'.",
+    draft_delivered: "Notifies the client their draft is ready for review. Status auto-updates to 'Draft Delivered'.",
+    revision_delivered: "Notifies the client their revision is ready. Status auto-updates to 'Revision Delivered'.",
+    final_delivery: "Marks the project as final delivery sent. Status auto-updates to 'Final Delivery Sent'.",
+  };
+  function updateHint(val) {
+    document.getElementById('typeHint').innerHTML = hints[val] || '';
+  }
+
+  // Scroll thread to bottom
+  const thread = document.getElementById('thread');
+  if (thread) thread.scrollTop = thread.scrollHeight;
+</script>
+
+</body>
+</html>
